@@ -145,11 +145,7 @@ public class Anderson extends ForwardFlowAnalysis {
 
 			 */
 
-			/*
-
-			[To do] Implement better analysis for function calls
-
-		     */
+			// TODO Implement better analysis for function calls
 		}
 
 		else if (u instanceof DefinitionStmt) {
