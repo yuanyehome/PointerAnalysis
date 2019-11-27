@@ -14,8 +14,8 @@ import soot.toolkits.scalar.ForwardFlowAnalysis;
 
 // TODO whether the location of test has impact on results
 public class Anderson extends ForwardFlowAnalysis {
-	private static int allocId = 0;
-	private static boolean is_checked = false;
+	public static int allocId = 0;
+	public static boolean is_checked = false;
 	Map<Local, TreeSet<Integer>> pts = new HashMap<Local, TreeSet<Integer>>(); // points-to set, each local a state
 	TreeMap<Integer, TreeSet<Integer>> queries = new TreeMap<Integer, TreeSet<Integer>>(); // record query info
 	TreeSet<Integer> result = new TreeSet<Integer>();
@@ -166,10 +166,12 @@ public class Anderson extends ForwardFlowAnalysis {
 				RightVal.addAll(in.get(from));
 			}
 			else if (RightOp instanceof NewArrayExpr) {
-
+				ArrayHandler handler = new ArrayHandler();
+				handler.run(this, _in, _data);
 			}
 			else if (RightOp instanceof CastExpr) {
-
+				CastHandler handler = new CastHandler();
+				handler.run(this, _in, _data);
 			}
 			else if (RightOp instanceof InvokeExpr) {
 				invokeExprHandler((InvokeExpr) RightOp, RightVal, in, out);
