@@ -1,0 +1,141 @@
+public class test.FieldSensitivity extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        test.FieldSensitivity this;
+
+        this := @this: test.FieldSensitivity;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    private final void assign(benchmark.objects.A, benchmark.objects.A)
+    {
+        test.FieldSensitivity this;
+        benchmark.objects.A x, y;
+        benchmark.objects.B temp$0;
+
+        this := @this: test.FieldSensitivity;
+
+        x := @parameter0: benchmark.objects.A;
+
+        y := @parameter1: benchmark.objects.A;
+
+        temp$0 = x.<benchmark.objects.A: benchmark.objects.B f>;
+
+        y.<benchmark.objects.A: benchmark.objects.B f> = temp$0;
+
+        return;
+    }
+
+    private final void test()
+    {
+        test.FieldSensitivity this;
+        benchmark.objects.B temp$0, temp$3, d;
+        benchmark.objects.A temp$1, temp$2;
+
+        this := @this: test.FieldSensitivity;
+
+        staticinvoke <benchmark.internal.BenchmarkN: void alloc(int)>(1);
+
+        temp$0 = new benchmark.objects.B;
+
+        specialinvoke temp$0.<benchmark.objects.B: void <init>()>();
+
+        staticinvoke <benchmark.internal.BenchmarkN: void alloc(int)>(2);
+
+        temp$1 = new benchmark.objects.A;
+
+        specialinvoke temp$1.<benchmark.objects.A: void <init>(benchmark.objects.B)>(temp$0);
+
+        staticinvoke <benchmark.internal.BenchmarkN: void alloc(int)>(3);
+
+        temp$2 = new benchmark.objects.A;
+
+        specialinvoke temp$2.<benchmark.objects.A: void <init>()>();
+
+        staticinvoke <benchmark.internal.BenchmarkN: void alloc(int)>(4);
+
+        temp$3 = new benchmark.objects.B;
+
+        specialinvoke temp$3.<benchmark.objects.B: void <init>()>();
+
+        virtualinvoke this.<test.FieldSensitivity: void assign(benchmark.objects.A,benchmark.objects.A)>(temp$1, temp$2);
+
+        d = temp$2.<benchmark.objects.A: benchmark.objects.B f>;
+
+        staticinvoke <benchmark.internal.BenchmarkN: void test(int,java.lang.Object)>(1, d);
+
+        return;
+    }
+
+    public void test2()
+    {
+        test.FieldSensitivity this;
+        benchmark.objects.B temp$0, temp$1, temp$4, temp$5;
+        benchmark.objects.A temp$2, temp$3;
+
+        this := @this: test.FieldSensitivity;
+
+        staticinvoke <benchmark.internal.BenchmarkN: void alloc(int)>(5);
+
+        temp$0 = new benchmark.objects.B;
+
+        specialinvoke temp$0.<benchmark.objects.B: void <init>()>();
+
+        staticinvoke <benchmark.internal.BenchmarkN: void alloc(int)>(6);
+
+        temp$1 = new benchmark.objects.B;
+
+        specialinvoke temp$1.<benchmark.objects.B: void <init>()>();
+
+        staticinvoke <benchmark.internal.BenchmarkN: void alloc(int)>(7);
+
+        temp$2 = new benchmark.objects.A;
+
+        specialinvoke temp$2.<benchmark.objects.A: void <init>()>();
+
+        staticinvoke <benchmark.internal.BenchmarkN: void alloc(int)>(8);
+
+        temp$3 = new benchmark.objects.A;
+
+        specialinvoke temp$3.<benchmark.objects.A: void <init>()>();
+
+        temp$2.<benchmark.objects.A: benchmark.objects.B f> = temp$0;
+
+        temp$3.<benchmark.objects.A: benchmark.objects.B f> = temp$1;
+
+        temp$4 = temp$2.<benchmark.objects.A: benchmark.objects.B f>;
+
+        staticinvoke <benchmark.internal.BenchmarkN: void test(int,java.lang.Object)>(2, temp$4);
+
+        temp$5 = temp$3.<benchmark.objects.A: benchmark.objects.B f>;
+
+        staticinvoke <benchmark.internal.BenchmarkN: void test(int,java.lang.Object)>(3, temp$5);
+
+        return;
+    }
+
+    public static void main(java.lang.String[])
+    {
+        java.lang.String[] args;
+        test.FieldSensitivity temp$0;
+
+        args := @parameter0: java.lang.String[];
+
+        staticinvoke <benchmark.internal.BenchmarkN: void alloc(int)>(9);
+
+        temp$0 = new test.FieldSensitivity;
+
+        specialinvoke temp$0.<test.FieldSensitivity: void <init>()>();
+
+        virtualinvoke temp$0.<test.FieldSensitivity: void test()>();
+
+        virtualinvoke temp$0.<test.FieldSensitivity: void test2()>();
+
+        return;
+    }
+}
