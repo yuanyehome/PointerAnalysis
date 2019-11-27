@@ -2,7 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="21b8e92f-8719-426d-92f9-e0157e2873b2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/code/test/my_test_default_num.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/note.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/core/Anderson.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/core/Anderson.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/test/Hello.class" beforeDir="false" afterPath="$PROJECT_DIR$/code/test/Hello.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/test/Hello.java" beforeDir="false" afterPath="$PROJECT_DIR$/code/test/Hello.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/result.txt" beforeDir="false" afterPath="$PROJECT_DIR$/result.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sootOutput/test.FieldSensitivity.jimple" beforeDir="false" afterPath="$PROJECT_DIR$/sootOutput/test.FieldSensitivity.jimple" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sootOutput/test.Hello.jimple" beforeDir="false" afterPath="$PROJECT_DIR$/sootOutput/test.Hello.jimple" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/core/Anderson.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Anderson.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -44,7 +52,7 @@
     <configuration name="MyPointerAnalysis" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="core.MyPointerAnalysis" />
       <module name="PointerAnalysisByTH" />
-      <option name="PROGRAM_PARAMETERS" value="code test.FieldSensitivity" />
+      <option name="PROGRAM_PARAMETERS" value="code test.Hello" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="core.*" />

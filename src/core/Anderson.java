@@ -11,9 +11,10 @@ import soot.toolkits.graph.DirectedGraph;
 import soot.toolkits.graph.ExceptionalUnitGraph;
 import soot.toolkits.scalar.ForwardFlowAnalysis;
 
-
+// TODO whether the location of test has impact on results
 public class Anderson extends ForwardFlowAnalysis {
 	private static int allocId = 0;
+	private static boolean is_checked = false;
 	Map<Local, TreeSet<Integer>> pts = new HashMap<Local, TreeSet<Integer>>(); // points-to set, each local a state
 	TreeMap<Integer, TreeSet<Integer>> queries = new TreeMap<Integer, TreeSet<Integer>>(); // record query info
 	String curPrefix; // used for function calls, to distinguish different local vals
@@ -86,6 +87,7 @@ public class Anderson extends ForwardFlowAnalysis {
 			InvokeExpr ie = ((InvokeStmt) u).getInvokeExpr();
 			if (ie.getMethod().toString().equals("<benchmark.internal.BenchmarkN: void alloc(int)>")) {
 				allocId = ((IntConstant)ie.getArgs().get(0)).value;
+				is_checked = true;
 				return;
 			}
 			if (ie.getMethod().toString().equals("<benchmark.internal.BenchmarkN: void test(int,java.lang.Object)>")) {
@@ -95,7 +97,7 @@ public class Anderson extends ForwardFlowAnalysis {
 				if (!pts.containsKey(v))
 					pts.put((Local) v, new TreeSet<Integer>());
 				pts.get(v).addAll(in.get(v));
-				queries.put(id, pts.get(v));
+				queries.put(id, new TreeSet<Integer>(pts.get(v)));
 				return;
 			}
 
@@ -127,7 +129,11 @@ public class Anderson extends ForwardFlowAnalysis {
 
 			if (RightOp instanceof NewExpr) {
 				Local to = (Local)((DefinitionStmt) u).getLeftOp();
-				RightVal.add(allocId);
+				if (is_checked) {
+					RightVal.add(allocId);
+					is_checked = false;
+				}
+				else RightVal.add(0);
 			}
 			if (RightOp instanceof Local) {
 				Local from = (Local) RightOp;
