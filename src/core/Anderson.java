@@ -3,6 +3,7 @@ package core;
 import java.util.*;
 
 import fj.data.Tree;
+import polyglot.ast.NewArray;
 import soot.*;
 import soot.Local;
 import soot.SootMethod;
@@ -135,7 +136,8 @@ public class Anderson extends ForwardFlowAnalysis {
 			Value LeftOp = ((DefinitionStmt)u).getLeftOp();
 			TreeSet<Integer> RightVal = new TreeSet<Integer>();
 
-			if (RightOp instanceof NewExpr) {
+			if (RightOp instanceof NewExpr || RightOp instanceof NewArrayExpr
+					|| RightOp instanceof  NewMultiArrayExpr) {
 				Local to = (Local)((DefinitionStmt) u).getLeftOp();
 				if (is_checked) {
 					RightVal.add(allocId);
@@ -147,10 +149,11 @@ public class Anderson extends ForwardFlowAnalysis {
 				Local from = (Local) RightOp;
 				RightVal.addAll(in.get(from));
 			}
-			else if (RightOp instanceof NewArrayExpr) {
-				ArrayHandler handler = new ArrayHandler();
-				handler.run(this, _in, _data);
-			}
+//			else if (RightOp instanceof NewArrayExpr) {
+//				ArrayHandler handler = new ArrayHandler();
+//				handler.run(this, _in, _data);
+//			}
+			//Don't delete, just for future work
 			else if (RightOp instanceof CastExpr) {
 				CastHandler handler = new CastHandler();
 				handler.run(this, _in, _data);
