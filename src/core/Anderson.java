@@ -116,13 +116,8 @@ public class Anderson extends ForwardFlowAnalysis {
 
 			Anderson anderson = new Anderson(graph, curPrefix + m.getName());
 			anderson.run(pts, queries);
+			// TODO Implement better analysis for function calls
 
-
-			/*
-
-			[To do] Implement better analysis for function calls
-
-		     */
 		}
 
 		if (u instanceof DefinitionStmt) {
@@ -157,16 +152,14 @@ public class Anderson extends ForwardFlowAnalysis {
 			}
 
 			/*
-			[To do] Deal with other types of left/right Op.
-			[To do] Deal with arrays.
-			[To do] Deal with fields.
+			TODO Deal with other types of left/right Op.
+			TODO Deal with arrays.
+			TODO Deal with fields.
 			 */
 		}
 
 		if (u instanceof ReturnStmt) {
-			/*
-			[To do] Deal with Return
-			 */
+			// TODO Deal with Return
 		}
 
 	}
