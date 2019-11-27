@@ -2,6 +2,7 @@ package core;
 
 import java.util.*;
 
+import fj.data.Tree;
 import soot.*;
 import soot.Local;
 import soot.SootMethod;
@@ -17,6 +18,8 @@ public class Anderson extends ForwardFlowAnalysis {
 	private static boolean is_checked = false;
 	Map<Local, TreeSet<Integer>> pts = new HashMap<Local, TreeSet<Integer>>(); // points-to set, each local a state
 	TreeMap<Integer, TreeSet<Integer>> queries = new TreeMap<Integer, TreeSet<Integer>>(); // record query info
+	TreeSet<Integer> result = new TreeSet<Integer>();
+	Map<Local, TreeSet<Integer>> args = new HashMap<Local, TreeSet<Integer>>();
 	String curPrefix; // used for function calls, to distinguish different local vals
 
 	public Anderson(DirectedGraph graph, String _curPrefix) {
@@ -24,14 +27,28 @@ public class Anderson extends ForwardFlowAnalysis {
 		curPrefix = _curPrefix + '/';
 	}
 
-	void run(Map<Local, TreeSet<Integer>> _pts, TreeMap<Integer, TreeSet<Integer>> _queries) {
+	void run(Map<Local, TreeSet<Integer>> _pts, TreeMap<Integer, TreeSet<Integer>> _queries,
+			 TreeSet<Integer> _result, Map<Local, TreeSet<Integer>> _args) {
+		System.out.println(curPrefix);
+		System.out.println(curPrefix+"Previous arguments:"+_args.toString());
+		args.putAll(_args);
 		doAnalysis(); // analysis main body (implemented in FlowAnalysis)
 		_pts.putAll(pts);
 		_queries.putAll(queries);
+		_result.addAll(result);
+		_args.putAll(args);
+		System.out.println(curPrefix+"After arguments:"+_args.toString());
 	}
 
 	protected Object newInitialFlow() {
 		return new HashMap<Local, TreeSet<Integer>>();
+	}
+
+	@Override
+	protected Object entryInitialFlow() {
+		Map<String, Set<String>> ret = new HashMap<String, Set<String>>();
+		copy(args, ret);
+		return ret;
 	}
 
 	// deep copy for HashMap
@@ -67,6 +84,22 @@ public class Anderson extends ForwardFlowAnalysis {
 		l.setName(curPrefix+l.getName());
 	}
 
+	private void invokeExprHandler(InvokeExpr ie, TreeSet<Integer> res,
+								   Map<Local, TreeSet<Integer>> in, Map<Local, TreeSet<Integer>> out) {
+		SootMethod m = ie.getMethod();
+		DirectedGraph graph = new ExceptionalUnitGraph(m.retrieveActiveBody());
+		Anderson anderson = new Anderson(graph, curPrefix + m.getName());
+
+		Map<Local, TreeSet<Integer>> sonArgs = new HashMap<Local, TreeSet<Integer>>();
+		List<Value> args = ie.getArgs();
+		for (Value arg: args) {
+			if (arg instanceof Local) {
+				sonArgs.put((Local) arg, in.get(arg));
+			}
+		}
+		anderson.run(pts, queries, res, sonArgs);
+		out.putAll(sonArgs);
+	}
 
 	// transform function
 	protected void flowThrough(Object _in, Object _data, Object _out)
@@ -77,8 +110,8 @@ public class Anderson extends ForwardFlowAnalysis {
 		Unit u = (Unit) _data;
 
 		// print jimple stmt and points-to set
-		System.out.println(u.toString());
-		System.out.println(in.toString());
+		//System.out.println(u.toString());
+		//System.out.println(in.toString());
 
 		copy(in, out);
 
@@ -102,9 +135,7 @@ public class Anderson extends ForwardFlowAnalysis {
 			}
 
 			// current implementation for function calls, context-insensitive, don't consider arguments
-			SootMethod m = ie.getMethod();
-			DirectedGraph graph = new ExceptionalUnitGraph(m.retrieveActiveBody());
-
+			invokeExprHandler(ie, new TreeSet<Integer>(), in, out);
 			//print some info
 
 			/*
@@ -114,15 +145,14 @@ public class Anderson extends ForwardFlowAnalysis {
 
 			 */
 
+			/*
 
+			[To do] Implement better analysis for function calls
 
-			Anderson anderson = new Anderson(graph, curPrefix + m.getName());
-			anderson.run(pts, queries);
-			// TODO Implement better analysis for function calls
-
+		     */
 		}
 
-		if (u instanceof DefinitionStmt) {
+		else if (u instanceof DefinitionStmt) {
 			Value RightOp = ((DefinitionStmt)u).getRightOp();
 			Value LeftOp = ((DefinitionStmt)u).getLeftOp();
 			TreeSet<Integer> RightVal = new TreeSet<Integer>();
@@ -135,22 +165,26 @@ public class Anderson extends ForwardFlowAnalysis {
 				}
 				else RightVal.add(0);
 			}
-			if (RightOp instanceof Local) {
+			else if (RightOp instanceof Local) {
 				Local from = (Local) RightOp;
 				RightVal.addAll(in.get(from));
 			}
-			if (RightOp instanceof NewArrayExpr) {
+			else if (RightOp instanceof NewArrayExpr) {
 
 			}
-			if (RightOp instanceof CastExpr) {
+			else if (RightOp instanceof CastExpr) {
 
 			}
-			if (RightOp instanceof InvokeExpr) {
+			else if (RightOp instanceof InvokeExpr) {
+				invokeExprHandler((InvokeExpr) RightOp, RightVal, in, out);
+			}
+			else if (RightOp instanceof Ref) {
 
 			}
-			if (RightOp instanceof Ref) {
-
+			else {
+				System.out.println("DefinitionStmt: Not implemented: "+RightOp.getClass().getName());
 			}
+
 
 
 			if (LeftOp instanceof Local) {
@@ -164,9 +198,24 @@ public class Anderson extends ForwardFlowAnalysis {
 			 */
 		}
 
-		if (u instanceof ReturnStmt) {
-			// TODO Deal with Return
+		else if (u instanceof ReturnStmt || u instanceof ReturnVoidStmt) {
+			System.out.println(curPrefix+":"+args.toString());
+			System.out.println(curPrefix+":"+in.toString());
+			for(Map.Entry<Local, TreeSet<Integer>> e : args.entrySet()) {
+				e.setValue(in.get(e.getKey()));
+			}
+			if (u instanceof ReturnStmt) {
+				Value ReturnOp = ((ReturnStmt) u).getOp();
+				if (ReturnOp instanceof Local) {
+					result.addAll(in.get(ReturnOp));
+				}
+			}
 		}
+		else {
+			System.out.println("Stmt not implemented: "+u.getClass().getName());
+		}
+
+
 
 	}
 
@@ -175,5 +224,5 @@ public class Anderson extends ForwardFlowAnalysis {
 	TreeSet<Integer> getPointsToSet(Local local) {
 		return pts.get(local);
 	}
-	
+
 }
