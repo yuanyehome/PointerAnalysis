@@ -12,41 +12,76 @@ public class test.Hello extends java.lang.Object
         return;
     }
 
+    public static void internal()
+    {
+        benchmark.objects.A $r1;
+
+        staticinvoke <benchmark.internal.BenchmarkN: void alloc(int)>(4);
+
+        $r1 = new benchmark.objects.A;
+
+        specialinvoke $r1.<benchmark.objects.A: void <init>()>();
+
+        return;
+    }
+
     public static void main(java.lang.String[])
     {
         java.lang.String[] r0;
-        benchmark.objects.A $r3, $r4, $r5;
-        int $i0;
+        benchmark.objects.A $r1, $r2, $r3, r4, r5;
+        int $i0, $i1, $i2;
 
         r0 := @parameter0: java.lang.String[];
 
-        staticinvoke <benchmark.internal.Benchmark: void alloc(int)>(1);
+        staticinvoke <benchmark.internal.BenchmarkN: void alloc(int)>(1);
+
+        $r1 = new benchmark.objects.A;
+
+        specialinvoke $r1.<benchmark.objects.A: void <init>()>();
+
+        r4 = $r1;
+
+        staticinvoke <benchmark.internal.BenchmarkN: void alloc(int)>(2);
+
+        $r2 = new benchmark.objects.A;
+
+        specialinvoke $r2.<benchmark.objects.A: void <init>()>();
+
+        r5 = $r2;
+
+        staticinvoke <benchmark.internal.BenchmarkN: void alloc(int)>(3);
 
         $r3 = new benchmark.objects.A;
 
         specialinvoke $r3.<benchmark.objects.A: void <init>()>();
 
-        staticinvoke <benchmark.internal.Benchmark: void alloc(int)>(2);
-
-        $r4 = new benchmark.objects.A;
-
-        specialinvoke $r4.<benchmark.objects.A: void <init>()>();
-
-        staticinvoke <benchmark.internal.Benchmark: void alloc(int)>(3);
-
-        $r5 = new benchmark.objects.A;
-
-        specialinvoke $r5.<benchmark.objects.A: void <init>()>();
+        staticinvoke <benchmark.internal.BenchmarkN: void test(int,java.lang.Object)>(1, $r1);
 
         $i0 = lengthof r0;
 
         if $i0 <= 1 goto label1;
 
+        r4 = $r2;
+
      label1:
-        staticinvoke <benchmark.internal.Benchmark: void test(int,java.lang.String)>(1, "a");
+        $i1 = lengthof r0;
 
-        staticinvoke <benchmark.internal.Benchmark: void test(int,java.lang.String)>(2, "c");
+        if $i1 <= 2 goto label2;
 
+        r5 = $r3;
+
+     label2:
+        staticinvoke <benchmark.internal.BenchmarkN: void test(int,java.lang.Object)>(2, r4);
+
+        staticinvoke <benchmark.internal.BenchmarkN: void test(int,java.lang.Object)>(3, r5);
+
+        staticinvoke <benchmark.internal.BenchmarkN: void test(int,java.lang.Object)>(4, $r3);
+
+        $i2 = lengthof r0;
+
+        if $i2 <= 3 goto label3;
+
+     label3:
         return;
     }
 }

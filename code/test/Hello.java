@@ -7,8 +7,7 @@ public class Hello {
 
   public static void internal() {
     BenchmarkN.alloc(4);
-    A a = new A();
-    BenchmarkN.test(4, a);
+    A a1 = new A();
   }
 
   public static void main(String[] args) {
@@ -22,8 +21,8 @@ public class Hello {
     if (args.length > 1) a = b;
     if (args.length > 2) b = c;
     BenchmarkN.test(2, a);
-    BenchmarkN.test(3, c);
-    BenchmarkN.test(4, b);
-    internal();
+    BenchmarkN.test(3, b);
+    BenchmarkN.test(4, c);
+    if (args.length > 3) c = a;
   }
 }
