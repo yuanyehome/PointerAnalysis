@@ -84,15 +84,15 @@ public class StoreType {
         int cnt = 0;
         while (!(query.getBase() instanceof Local)) {
             ++cnt;
-            values.add(query);
+            values.add(0, query);
             query = (InstanceFieldRef) query.getBase();
             // a.b.c.d.e => cnt = 4
         }
-        values.add(query);
-        values.add(query.getBase());
+        values.add(0, query);
+        values.add(0, query.getBase());
         int present = 0;
         int layer = Math.min(cnt + 1, StoreType.deepestLayer);
-        StoreType presentElement = new StoreType(this);
+        StoreType presentElement = this;
         while (layer != 0) {
             presentElement = presentElement.get(values.get(present));
             present++;

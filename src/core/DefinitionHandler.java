@@ -83,7 +83,7 @@ public class DefinitionHandler extends StmtHandler {
         int present = 0;
         int layer = Math.min(cnt + 1, StoreType.deepestLayer);
         boolean flag = (cnt + 1 <= StoreType.deepestLayer);
-        StoreType presentElement = new StoreType(out);
+        StoreType presentElement = out;
         while (layer != 0) {
             presentElement = presentElement.get(values.get(present));
             present++;
