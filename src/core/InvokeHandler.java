@@ -6,7 +6,6 @@ import soot.Value;
 import soot.jimple.IntConstant;
 import soot.jimple.InvokeExpr;
 import soot.jimple.InvokeStmt;
-import soot.jimple.ReturnStmt;
 
 import java.util.Map;
 import java.util.TreeSet;

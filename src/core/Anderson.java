@@ -2,8 +2,10 @@ package core;
 
 import soot.Local;
 import soot.Unit;
-import soot.Value;
-import soot.jimple.*;
+import soot.jimple.DefinitionStmt;
+import soot.jimple.InvokeStmt;
+import soot.jimple.ReturnStmt;
+import soot.jimple.ReturnVoidStmt;
 import soot.toolkits.graph.DirectedGraph;
 import soot.toolkits.scalar.ForwardFlowAnalysis;
 

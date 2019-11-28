@@ -7,7 +7,6 @@ import soot.jimple.*;
 
 import java.util.Map;
 import java.util.TreeSet;
-import java.util.logging.Logger;
 
 public class DefinitionHandler extends StmtHandler {
     @Override
@@ -31,12 +30,18 @@ public class DefinitionHandler extends StmtHandler {
             rightVal = handleCast(ad, in, du);
         } else if (RightOp instanceof InvokeExpr) {
             // TODO
+        } else if (RightOp instanceof InstanceFieldRef) {
+            rightVal = handleField(ad, in, du);
         } else {
             System.out.println("\033[33mDefinitionStmt: Not implemented - Right: \033[0m" + RightOp.getClass().getName());
         }
 
         if (LeftOp instanceof Local) {
             out.put((Local) LeftOp, rightVal);
+        } else if (LeftOp instanceof InstanceFieldRef) {
+            System.out.println("\033[32mDefinitionStmt: Not implemented-Left: \033[0m" +
+                    LeftOp.getClass().getName());
+            // out.put((Local) LeftOp, RightVal);
         } else {
             System.out.println(
                     "\033[32mDefinitionStmt: Not implemented - Left: \033[0m" +
@@ -51,6 +56,11 @@ public class DefinitionHandler extends StmtHandler {
 
     private TreeSet<Integer> handleCast(Anderson ad, Map<Local, TreeSet<Integer>> in, DefinitionStmt st) {
         return new TreeSet<>(in.get((Local)st.getRightOp()));
+    }
+
+    private TreeSet<Integer> handleField(Anderson ad, Map<Local, TreeSet<Integer>> in, DefinitionStmt st) {
+        return new TreeSet<>();
+        // TODO check if -1->find root->find deepest field->give value
     }
 
 }
