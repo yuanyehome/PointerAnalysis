@@ -10,7 +10,7 @@ import java.util.TreeSet;
 
 public class ReturnHandler extends StmtHandler {
     @Override
-    public void handle(Anderson ad, Map<Local, TreeSet<Integer>> in, Unit u, Map<Local, TreeSet<Integer>> out) {
+    public void handle(Anderson ad, StoreType in, Unit u, StoreType out) {
         System.out.println(ad.curPrefix + " args: " + ad.args.toString());
         System.out.println(ad.curPrefix + " in: " + in.toString());
         for (Map.Entry<Local, TreeSet<Integer>> e : ad.args.entrySet()) {

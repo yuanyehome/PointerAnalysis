@@ -14,6 +14,7 @@ import java.util.*;
 public class Anderson extends ForwardFlowAnalysis {
     public int allocId = 0;
     public boolean isChecked = false;
+    public static int hyperPara = 0;
 
     Map<Local, TreeSet<Integer>> pts =
             new HashMap<>(); // points-to set, each local a state
@@ -43,21 +44,21 @@ public class Anderson extends ForwardFlowAnalysis {
     }
 
     protected Object newInitialFlow() {
-        return new HashMap<Local, TreeSet<Integer>>();
+        return new StoreType(hyperPara);
     }
 
-    @Override
-    protected Object entryInitialFlow() {
-        Map<String, Set<String>> ret = new HashMap<String, Set<String>>();
-        copy(args, ret);
-        return ret;
-    }
+//    @Override
+//    protected Object entryInitialFlow() {
+//        Map<String, Set<String>> ret = new HashMap<String, Set<String>>();
+//        copy(args, ret);
+//        return ret;
+//    }
 
     // deep copy for HashMap
     protected void copy(Object _src, Object _dest) {
-        Map<Local, TreeSet<Integer>> src, dest;
-        src = (Map<Local, TreeSet<Integer>>) _src;
-        dest = (Map<Local, TreeSet<Integer>>) _dest;
+        StoreType src, dest;
+        src = (StoreType) _src;
+        dest = (StoreType) _dest;
         dest.clear();
         for (Map.Entry<Local, TreeSet<Integer>> e : src.entrySet()) {
             dest.put(e.getKey(), new TreeSet<Integer>(e.getValue()));
@@ -65,10 +66,10 @@ public class Anderson extends ForwardFlowAnalysis {
     }
 
     protected void merge(Object _in1, Object _in2, Object _out) {
-        Map<Local, TreeSet<Integer>> in1, in2, out;
-        in1 = (Map<Local, TreeSet<Integer>>) _in1;
-        in2 = (Map<Local, TreeSet<Integer>>) _in2;
-        out = (Map<Local, TreeSet<Integer>>) _out;
+        StoreType in1, in2, out;
+        in1 = (StoreType) _in1;
+        in2 = (StoreType) _in2;
+        out = (StoreType) _out;
         out.clear();
         out.putAll(in1);
         for (Map.Entry<Local, TreeSet<Integer>> e : in2.entrySet()) {
@@ -93,9 +94,9 @@ public class Anderson extends ForwardFlowAnalysis {
      */
     @Override
     protected void flowThrough(Object _in, Object _data, Object _out) {
-        Map<Local, TreeSet<Integer>> in, out;
-        in = (Map<Local, TreeSet<Integer>>) _in;
-        out = (Map<Local, TreeSet<Integer>>) _out;
+        StoreType in, out;
+        in = (StoreType) _in;
+        out = (StoreType) _out;
         Unit u = (Unit) _data;
 
         // print jimple stmt and points-to set
