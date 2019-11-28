@@ -9,7 +9,7 @@ import soot.toolkits.scalar.ForwardFlowAnalysis;
 
 import java.util.*;
 
-// TODO whether the location of test has impact on results
+
 public class Anderson extends ForwardFlowAnalysis {
     public static int allocId = 0;
     public static boolean isChecked = false;
