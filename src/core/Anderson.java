@@ -11,8 +11,8 @@ import java.util.*;
 
 
 public class Anderson extends ForwardFlowAnalysis {
-    public static int allocId = 0;
-    public static boolean isChecked = false;
+    public int allocId = 0;
+    public boolean isChecked = false;
     Map<Local, TreeSet<Integer>> pts = new HashMap<>(); // points-to set, each local a state
     TreeMap<Integer, TreeSet<Integer>> queries = new TreeMap<>(); // record query info
     TreeSet<Integer> result = new TreeSet<>();
