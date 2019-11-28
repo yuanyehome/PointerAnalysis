@@ -27,7 +27,7 @@ public class MyPointerAnalysis {
         Main.main(newArgv);
     }
 
-    public static String get_mainClass() {
+    public static String getMainClass() {
         return mainClass;
     }
 

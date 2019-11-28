@@ -15,7 +15,7 @@ public class WholeProgramTransformer extends SceneTransformer {
     @Override
     protected void internalTransform(String arg0, Map<String, String> arg1) {
 
-        SootClass mainClass = Scene.v().getSootClass(MyPointerAnalysis.get_mainClass());
+        SootClass mainClass = Scene.v().getSootClass(MyPointerAnalysis.getMainClass());
         SootMethod m = mainClass.getMethodByName("main");
 
         // build CFG with exception control flow
