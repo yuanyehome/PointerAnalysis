@@ -1,27 +1,34 @@
 package core;
 
-import java.io.File;
-import java.util.Arrays;
-
 import soot.Main;
 import soot.PackManager;
 import soot.Transform;
 
-public class MyPointerAnalysis {
-    /**
-     * example args:
-     *   args[0] = "/root/workspace/code"
-     *   args[1] = "test.Hello"
-     */
-	public static String mainClass;
-	public static void main(String[] args) {
-		//String jdkLibPath = System.getProperty("java.home")+"/lib/"; // "/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/";
+import java.util.Arrays;
 
-		mainClass = args[1];
-		PackManager.v().getPack("wjtp").add(new Transform("wjtp.mypta", new WholeProgramTransformer()));
-		String newArgv[] = new String[] { "-w", "-pp", "-f", "J", "-cp", args[0], args[1]};
-		System.out.println(Arrays.toString(newArgv));
-		System.out.println("Hello!");
-		Main.main(newArgv);
-	}
+/**
+ * @author yangchenyang
+ * @brief entrance of program
+ * <p>
+ * example args:
+ * args[0] = "/root/workspace/code"
+ * args[1] = "test.Hello"
+ */
+public class MyPointerAnalysis {
+
+    private static String mainClass;
+
+    public static void main(String[] args) {
+        mainClass = args[1];
+        PackManager.v().getPack("wjtp").add(new Transform("wjtp.mypta", new WholeProgramTransformer()));
+        String[] newArgv = new String[]{"-w", "-pp", "-f", "J", "-cp", args[0], args[1]};
+        System.out.println(Arrays.toString(newArgv));
+        System.out.println("Begin to analysis pointer!");
+        Main.main(newArgv);
+    }
+
+    public static String get_mainClass() {
+        return mainClass;
+    }
+
 }

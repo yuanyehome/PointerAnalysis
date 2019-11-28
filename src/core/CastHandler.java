@@ -6,10 +6,13 @@ import soot.jimple.DefinitionStmt;
 import java.util.Map;
 import java.util.TreeSet;
 
+/**
+ * @author yangchenyang
+ */
 public class CastHandler {
     public TreeSet<Integer> run(Anderson ad, Object in, Object data) {
         TreeSet<Integer> ans = new TreeSet<Integer>(
-                ((Map<Local, TreeSet<Integer>>) in).get(((DefinitionStmt)data).getRightOp()));
+                ((Map<Local, TreeSet<Integer>>) in).get(((DefinitionStmt) data).getRightOp()));
         return ans;
     }
 }

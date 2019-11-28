@@ -1,6 +1,5 @@
 package core;
 
-import com.sun.org.apache.xpath.internal.operations.And;
 import soot.Local;
 import soot.SootMethod;
 import soot.Value;
@@ -13,8 +12,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-public class invokeExprHandler {
-
+/**
+ * @author yangchenyang
+ */
+public class InvokeExprHandler {
 
     public void run(Anderson ad, InvokeExpr ie, TreeSet<Integer> res,
                     Map<Local, TreeSet<Integer>> in, Map<Local, TreeSet<Integer>> out) {
@@ -24,7 +25,7 @@ public class invokeExprHandler {
 
         Map<Local, TreeSet<Integer>> sonArgs = new HashMap<Local, TreeSet<Integer>>();
         List<Value> args = ie.getArgs();
-        for (Value arg: args) {
+        for (Value arg : args) {
             if (arg instanceof Local) {
                 sonArgs.put((Local) arg, in.get(arg));
             }
@@ -32,4 +33,5 @@ public class invokeExprHandler {
         anderson.run(ad.pts, ad.queries, res, sonArgs);
         out.putAll(sonArgs);
     }
+
 }
