@@ -1,16 +1,18 @@
 package core;
 
+import com.sun.xml.internal.ws.wsdl.writer.document.Definitions;
 import soot.Local;
 import soot.Unit;
 import soot.Value;
 import soot.jimple.*;
+import sun.security.jca.GetInstance;
 
 import java.util.Map;
 import java.util.TreeSet;
 
 public class DefinitionHandler extends StmtHandler {
     @Override
-    public void handle(Anderson ad, Map<Local, TreeSet<Integer>> in, Unit u, Map<Local, TreeSet<Integer>> out) {
+    public void handle(Anderson ad, StoreType in, Unit u, StoreType out) {
         DefinitionStmt du = (DefinitionStmt) u;
         Value RightOp = du.getRightOp();
         Value LeftOp = du.getLeftOp();
@@ -54,11 +56,20 @@ public class DefinitionHandler extends StmtHandler {
          */
     }
 
-    private TreeSet<Integer> handleCast(Anderson ad, Map<Local, TreeSet<Integer>> in, DefinitionStmt st) {
+    private TreeSet<Integer> handleCast(Anderson ad, StoreType in, DefinitionStmt st) {
         return new TreeSet<>(in.get((Local)st.getRightOp()));
     }
 
-    private TreeSet<Integer> handleField(Anderson ad, Map<Local, TreeSet<Integer>> in, DefinitionStmt st) {
+    private TreeSet<Integer> handleField(Anderson ad, StoreType in, DefinitionStmt st) {
+//        InstanceFieldRef Field = (InstanceFieldRef) st.getRightOp();
+//        InstanceFieldRef tmpField = Field;
+//        int cnt = 0;
+//        while (!(tmpField.getBase() instanceof Local)) {
+//            ++cnt;
+//            tmpField = (InstanceFieldRef) tmpField.getBase();
+//            // a.b.c.d.e => cnt = 4
+//        }
+//        Local root = (Local) tmpField.getBase();
         return new TreeSet<>();
         // TODO check if -1->find root->find deepest field->give value
     }

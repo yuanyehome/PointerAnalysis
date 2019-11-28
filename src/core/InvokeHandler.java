@@ -12,7 +12,7 @@ import java.util.TreeSet;
 
 public class InvokeHandler extends StmtHandler {
     @Override
-    public void handle(Anderson ad, Map<Local, TreeSet<Integer>> in, Unit u, Map<Local, TreeSet<Integer>> out) {
+    public void handle(Anderson ad, StoreType in, Unit u, StoreType out) {
         InvokeExpr ie = ((InvokeStmt) u).getInvokeExpr();
         String methodStr = ie.getMethod().toString();
         String allocStr = "<benchmark.internal.BenchmarkN: void alloc(int)>";
@@ -35,7 +35,7 @@ public class InvokeHandler extends StmtHandler {
         ad.isChecked = true;
     }
 
-    private void handleTest(Anderson ad, InvokeExpr ie, Map<Local, TreeSet<Integer>> in) {
+    private void handleTest(Anderson ad, InvokeExpr ie, StoreType in) {
         Value v = ie.getArgs().get(1);
         // prefixCheck((Local) v);
         Local lv = (Local) v;
