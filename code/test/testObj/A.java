@@ -3,13 +3,10 @@ import java.util.*;
 
 public class A {
     public Integer i = 3;
-    public Integer j = 5;
+    public j = 2;
+    public B b = new B();
 
     public Integer getI() {
         return i;
-    }
-
-    public Integer getJ() {
-        return j;
     }
 }

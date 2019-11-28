@@ -104,96 +104,11 @@ public class Anderson extends ForwardFlowAnalysis {
 
         // begin processing
         if (u instanceof InvokeStmt) {
-            InvokeExpr ie = ((InvokeStmt) u).getInvokeExpr();
-            if (ie.getMethod().toString().equals(
-                    "<benchmark.internal.BenchmarkN: void alloc(int)>")) {
-                allocId = ((IntConstant) ie.getArgs().get(0)).value;
-                isChecked = true;
-                return;
-            }
-            if (ie.getMethod().toString().equals(
-                    "<benchmark.internal.BenchmarkN: void test(int,java.lang.Object)>")) {
-                Value v = ie.getArgs().get(1);
-                // prefixCheck((Local) v);
-                Local lv = (Local) v;
-                int id = ((IntConstant) ie.getArgs().get(0)).value;
-                if (!pts.containsKey(lv))
-                    pts.put(lv, new TreeSet<Integer>());
-                pts.get(lv).addAll(in.get(lv));
-                queries.put(id, new TreeSet<Integer>(pts.get(lv)));
-                return;
-            }
-
-            // current implementation for function calls, context-insensitive, don't
-            // consider arguments
-            new InvokeExprHandler().run(this, ie, new TreeSet<Integer>(), in, out);
-
-      /*
-      System.out.println("------------------------------------");
-      System.out.println(curPrefix);
-      System.out.println(graph.toString());
-       */
-
-            // TODO Implement better analysis for function calls
+          new InvokeHandler().handle(this, in, u, out);
         } else if (u instanceof DefinitionStmt) {
-            Value RightOp = ((DefinitionStmt) u).getRightOp();
-            Value LeftOp = ((DefinitionStmt) u).getLeftOp();
-            TreeSet<Integer> RightVal = new TreeSet<Integer>();
-
-            if (RightOp instanceof AnyNewExpr) {
-                Local to = (Local) ((DefinitionStmt) u).getLeftOp();
-                if (isChecked) {
-                    RightVal.add(allocId);
-                    isChecked = false;
-                } else
-                    RightVal.add(0);
-            } else if (RightOp instanceof Local) {
-                Local from = (Local) RightOp;
-                RightVal.addAll(in.get(from));
-            }
-            //			else if (RightOp instanceof NewArrayExpr) {
-            //				ArrayHandler handler = new
-            //ArrayHandler(); 				handler.run(this, _in, _data);
-            //			}
-            // Don't delete, just for future work
-            else if (RightOp instanceof CastExpr || RightOp instanceof
-                    InstanceFieldRef) {
-                RightVal = new CastHandler().run(this, _in, _data);
-            } else if (RightOp instanceof InvokeExpr) {
-                new InvokeExprHandler().run(this, (InvokeExpr) RightOp, RightVal, in,
-                        out);
-            } else {
-                System.out.println(
-                        "\033[32mDefinitionStmt: Not implemented-Right: \033[0m" +
-                                RightOp.getClass().getName());
-            }
-
-            if (LeftOp instanceof InstanceFieldRef) {
-                out.put((Local) LeftOp, RightVal);
-            } else if (LeftOp instanceof Local) {
-                out.put((Local) LeftOp, RightVal);
-            } else {
-                System.out.println(
-                        "\033[32mDefinitionStmt: Not implemented-Left: \033[0m" +
-                                LeftOp.getClass().getName());
-            }
-
-      /*
-      TODO Deal with other types of left/right Op.
-      TODO Deal with fields.
-       */
+          new DefinitionHandler().handle(this, in, u, out);
         } else if (u instanceof ReturnStmt || u instanceof ReturnVoidStmt) {
-            System.out.println(curPrefix + " args: " + args.toString());
-            System.out.println(curPrefix + " in: " + in.toString());
-            for (Map.Entry<Local, TreeSet<Integer>> e : args.entrySet()) {
-                e.setValue(in.get(e.getKey()));
-            }
-            if (u instanceof ReturnStmt) {
-                Value returnOp = ((ReturnStmt) u).getOp();
-                if (returnOp instanceof Local) {
-                    result.addAll(in.get(returnOp));
-                }
-            }
+          new ReturnHandler().handle(this, in, u, out);
         } else {
             System.out.println("\033[32mStmt not implemented: \033[0m" +
                     u.getClass().getName());
