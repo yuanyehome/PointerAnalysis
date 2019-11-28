@@ -8,25 +8,27 @@ import soot.toolkits.graph.DirectedGraph;
 import soot.toolkits.scalar.ForwardFlowAnalysis;
 
 import java.util.*;
-import java.util.logging.Logger;
 
-// TODO whether the location of test has impact on results
 public class Anderson extends ForwardFlowAnalysis {
     public int allocId = 0;
     public boolean isChecked = false;
 
-    Map<Local, TreeSet<Integer>> pts = new HashMap<>(); // points-to set, each local a state
-    TreeMap<Integer, TreeSet<Integer>> queries = new TreeMap<>(); // record query info
+    Map<Local, TreeSet<Integer>> pts =
+            new HashMap<>(); // points-to set, each local a state
+    TreeMap<Integer, TreeSet<Integer>> queries =
+            new TreeMap<>(); // record query info
     TreeSet<Integer> result = new TreeSet<>();
     Map<Local, TreeSet<Integer>> args = new HashMap<>();
-    String curPrefix; // used for function calls, to distinguish different local vals
+    String
+            curPrefix; // used for function calls, to distinguish different local vals
 
     Anderson(DirectedGraph graph, String _curPrefix) {
         super(graph);
         curPrefix = _curPrefix + '/';
     }
 
-    void run(Map<Local, TreeSet<Integer>> _pts, TreeMap<Integer, TreeSet<Integer>> _queries,
+    void run(Map<Local, TreeSet<Integer>> _pts,
+             TreeMap<Integer, TreeSet<Integer>> _queries,
              TreeSet<Integer> _result, Map<Local, TreeSet<Integer>> _args) {
         System.out.println(curPrefix + " Previous arguments:" + _args.toString());
         args.putAll(_args);
@@ -100,15 +102,17 @@ public class Anderson extends ForwardFlowAnalysis {
 
         copy(in, out);
 
-        //begin processing
+        // begin processing
         if (u instanceof InvokeStmt) {
             InvokeExpr ie = ((InvokeStmt) u).getInvokeExpr();
-            if (ie.getMethod().toString().equals("<benchmark.internal.BenchmarkN: void alloc(int)>")) {
+            if (ie.getMethod().toString().equals(
+                    "<benchmark.internal.BenchmarkN: void alloc(int)>")) {
                 allocId = ((IntConstant) ie.getArgs().get(0)).value;
                 isChecked = true;
                 return;
             }
-            if (ie.getMethod().toString().equals("<benchmark.internal.BenchmarkN: void test(int,java.lang.Object)>")) {
+            if (ie.getMethod().toString().equals(
+                    "<benchmark.internal.BenchmarkN: void test(int,java.lang.Object)>")) {
                 Value v = ie.getArgs().get(1);
                 // prefixCheck((Local) v);
                 Local lv = (Local) v;
@@ -120,18 +124,64 @@ public class Anderson extends ForwardFlowAnalysis {
                 return;
             }
 
-            // current implementation for function calls, context-insensitive, don't consider arguments
+            // current implementation for function calls, context-insensitive, don't
+            // consider arguments
             new InvokeExprHandler().run(this, ie, new TreeSet<Integer>(), in, out);
 
-			/*
-			System.out.println("------------------------------------");
-			System.out.println(curPrefix);
-			System.out.println(graph.toString());
-			 */
+      /*
+      System.out.println("------------------------------------");
+      System.out.println(curPrefix);
+      System.out.println(graph.toString());
+       */
 
             // TODO Implement better analysis for function calls
         } else if (u instanceof DefinitionStmt) {
-            new DefinitionHandler().handle(this, in, u, out);
+            Value RightOp = ((DefinitionStmt) u).getRightOp();
+            Value LeftOp = ((DefinitionStmt) u).getLeftOp();
+            TreeSet<Integer> RightVal = new TreeSet<Integer>();
+
+            if (RightOp instanceof AnyNewExpr) {
+                Local to = (Local) ((DefinitionStmt) u).getLeftOp();
+                if (isChecked) {
+                    RightVal.add(allocId);
+                    isChecked = false;
+                } else
+                    RightVal.add(0);
+            } else if (RightOp instanceof Local) {
+                Local from = (Local) RightOp;
+                RightVal.addAll(in.get(from));
+            }
+            //			else if (RightOp instanceof NewArrayExpr) {
+            //				ArrayHandler handler = new
+            //ArrayHandler(); 				handler.run(this, _in, _data);
+            //			}
+            // Don't delete, just for future work
+            else if (RightOp instanceof CastExpr || RightOp instanceof
+                    InstanceFieldRef) {
+                RightVal = new CastHandler().run(this, _in, _data);
+            } else if (RightOp instanceof InvokeExpr) {
+                new InvokeExprHandler().run(this, (InvokeExpr) RightOp, RightVal, in,
+                        out);
+            } else {
+                System.out.println(
+                        "\033[32mDefinitionStmt: Not implemented-Right: \033[0m" +
+                                RightOp.getClass().getName());
+            }
+
+            if (LeftOp instanceof InstanceFieldRef) {
+                out.put((Local) LeftOp, RightVal);
+            } else if (LeftOp instanceof Local) {
+                out.put((Local) LeftOp, RightVal);
+            } else {
+                System.out.println(
+                        "\033[32mDefinitionStmt: Not implemented-Left: \033[0m" +
+                                LeftOp.getClass().getName());
+            }
+
+      /*
+      TODO Deal with other types of left/right Op.
+      TODO Deal with fields.
+       */
         } else if (u instanceof ReturnStmt || u instanceof ReturnVoidStmt) {
             System.out.println(curPrefix + " args: " + args.toString());
             System.out.println(curPrefix + " in: " + in.toString());
@@ -145,9 +195,9 @@ public class Anderson extends ForwardFlowAnalysis {
                 }
             }
         } else {
-            System.out.println("Stmt not implemented: " + u.getClass().getName());
+            System.out.println("\033[32mStmt not implemented: \033[0m" +
+                    u.getClass().getName());
         }
-
     }
 
     TreeSet<Integer> getPointsToSet(Local local) {
