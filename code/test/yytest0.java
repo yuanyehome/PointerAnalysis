@@ -17,9 +17,9 @@ public class yytest0 {
         A b = new A();
         BenchmarkN.alloc(3);
         A c = new A();
-//        BenchmarkN.test(1, a); // the points-to set now?
-//        if (args.length > 1) a = b;
-//        if (args.length > 2) b = c;
+        BenchmarkN.test(1, a); // the points-to set now?
+        if (args.length > 1) a = b;
+        if (args.length > 2) b = c;
         BenchmarkN.alloc(4);
         A[][][] arr = new A[6][6][6];
         BenchmarkN.test(1, arr);

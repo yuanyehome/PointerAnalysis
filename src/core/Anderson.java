@@ -6,6 +6,7 @@ import soot.Value;
 import soot.jimple.*;
 import soot.toolkits.graph.DirectedGraph;
 import soot.toolkits.scalar.ForwardFlowAnalysis;
+import sun.security.jca.GetInstance;
 
 import java.util.*;
 
@@ -127,8 +128,7 @@ public class Anderson extends ForwardFlowAnalysis {
             Value LeftOp = ((DefinitionStmt) u).getLeftOp();
             TreeSet<Integer> RightVal = new TreeSet<Integer>();
 
-            if (RightOp instanceof NewExpr || RightOp instanceof NewArrayExpr
-                    || RightOp instanceof NewMultiArrayExpr) {
+            if (RightOp instanceof AnyNewExpr) {
                 Local to = (Local) ((DefinitionStmt) u).getLeftOp();
                 if (isChecked) {
                     RightVal.add(allocId);
@@ -143,24 +143,29 @@ public class Anderson extends ForwardFlowAnalysis {
 //				handler.run(this, _in, _data);
 //			}
             // Don't delete, just for future work
-            else if (RightOp instanceof CastExpr) {
-                new CastHandler().run(this, _in, _data);
+            else if (RightOp instanceof CastExpr || RightOp instanceof InstanceFieldRef) {
+                RightVal = new CastHandler().run(this, _in, _data);
             } else if (RightOp instanceof InvokeExpr) {
                 new InvokeExprHandler().run(this, (InvokeExpr) RightOp, RightVal, in, out);
-            } else if (RightOp instanceof Ref) {
-
             } else {
-                System.out.println("DefinitionStmt: Not implemented: " + RightOp.getClass().getName());
+                System.out.println("\033[32mDefinitionStmt: Not implemented-Right: \033[0m" +
+                        RightOp.getClass().getName());
             }
 
 
-            if (LeftOp instanceof Local) {
+            if (LeftOp instanceof InstanceFieldRef) {
                 out.put((Local) LeftOp, RightVal);
+            }
+            else if (LeftOp instanceof Local) {
+                out.put((Local) LeftOp, RightVal);
+            }
+            else {
+                System.out.println("\033[32mDefinitionStmt: Not implemented-Left: \033[0m" +
+                        LeftOp.getClass().getName());
             }
 
 			/*
 			TODO Deal with other types of left/right Op.
-			TODO Deal with arrays.
 			TODO Deal with fields.
 			 */
         } else if (u instanceof ReturnStmt || u instanceof ReturnVoidStmt) {
@@ -175,10 +180,8 @@ public class Anderson extends ForwardFlowAnalysis {
                     result.addAll(in.get(returnOp));
                 }
             }
-        } else if (u instanceof IfStmt) {
-            System.out.println("\033[32mIfStmt not implemented\033[0m: " + u.getClass().getName());
         } else {
-            System.out.println("Stmt not implemented: " + u.getClass().getName());
+            System.out.println("\033[32mStmt not implemented: \033[0m" + u.getClass().getName());
         }
 
     }
