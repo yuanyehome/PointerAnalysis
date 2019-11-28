@@ -143,10 +143,15 @@ public class Anderson extends ForwardFlowAnalysis {
 //				handler.run(this, _in, _data);
 //			}
             // Don't delete, just for future work
-            else if (RightOp instanceof CastExpr || RightOp instanceof InstanceFieldRef) {
+            else if (RightOp instanceof CastExpr) {
                 RightVal = new CastHandler().run(this, _in, _data);
             } else if (RightOp instanceof InvokeExpr) {
                 new InvokeExprHandler().run(this, (InvokeExpr) RightOp, RightVal, in, out);
+            } else if (RightOp instanceof InstanceFieldRef) {
+//                InstanceFieldRef field = (InstanceFieldRef) RightOp;
+//                System.out.println("\033[32m[DEBUG]\033[0m" + field.getField().getName());
+//                System.out.println("\033[32m[DEBUG]\033[0m" + ((Local)field.getBase()).getName());
+                RightVal = new FieldHandler().run(this, _in, _data);
             } else {
                 System.out.println("\033[32mDefinitionStmt: Not implemented-Right: \033[0m" +
                         RightOp.getClass().getName());
@@ -154,7 +159,9 @@ public class Anderson extends ForwardFlowAnalysis {
 
 
             if (LeftOp instanceof InstanceFieldRef) {
-                out.put((Local) LeftOp, RightVal);
+                System.out.println("\033[32mDefinitionStmt: Not implemented-Left: \033[0m" +
+                        LeftOp.getClass().getName());
+                // out.put((Local) LeftOp, RightVal);
             }
             else if (LeftOp instanceof Local) {
                 out.put((Local) LeftOp, RightVal);
