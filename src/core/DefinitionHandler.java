@@ -65,7 +65,7 @@ public class DefinitionHandler extends StmtHandler {
 
     private TreeSet<Integer> handleField(Anderson ad, StoreType in, DefinitionStmt st) {
         InstanceFieldRef tmpField = (InstanceFieldRef) st.getRightOp();
-        return in.queryField((tmpField));
+        return in.queryField(tmpField);
     }
 
     private void handleLeftField(Anderson ad, StoreType out, DefinitionStmt st, TreeSet<Integer>rightVal) {
