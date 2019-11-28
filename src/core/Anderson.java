@@ -203,10 +203,7 @@ public class Anderson extends ForwardFlowAnalysis {
 
 	}
 
-
-
 	TreeSet<Integer> getPointsToSet(Local local) {
 		return pts.get(local);
 	}
-
 }
