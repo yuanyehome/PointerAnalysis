@@ -10,6 +10,7 @@ import soot.toolkits.graph.DirectedGraph;
 import soot.toolkits.scalar.ForwardFlowAnalysis;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 public class Anderson extends ForwardFlowAnalysis {
     public int allocId = 0;
@@ -48,6 +49,7 @@ public class Anderson extends ForwardFlowAnalysis {
 
     @Override
     protected Object entryInitialFlow() {
+        Logger.getLogger("").warning("Fuck it!");
         Map<String, Set<String>> ret = new HashMap<String, Set<String>>();
         copy(args, ret);
         return ret;

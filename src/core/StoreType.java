@@ -8,11 +8,20 @@ import java.util.TreeSet;
 
 
 public class StoreType {
-    public int deepestLayer = -1;
+    private static int deepestLayer = 3;
     public Map<Value, StoreType> table = new HashMap<>();
-    TreeSet<Integer> mapList = new TreeSet<>();
+    public TreeSet<Integer> mapList = new TreeSet<>();
 
-    StoreType(int x) {
-        deepestLayer = x;
+    public TreeSet<Integer> get(Value v) {
+        return table.get(v).mapList;
     }
+
+    public void put(Value v, StoreType st) {
+        table.put(v, st);
+    }
+
+    public void clear() {
+
+    }
+
 }
