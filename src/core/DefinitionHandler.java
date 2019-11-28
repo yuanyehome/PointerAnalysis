@@ -27,7 +27,7 @@ public class DefinitionHandler extends StmtHandler {
         } else if (RightOp instanceof Local) {
             // a = *b in Anderson
             Local from = (Local) RightOp;
-            rightVal.addAll(in.get(from));
+            rightVal.addAll(in.getPointsToSet(from));
         } else if (RightOp instanceof CastExpr) {
             rightVal = handleCast(ad, in, du);
         } else if (RightOp instanceof InvokeExpr) {
@@ -39,7 +39,7 @@ public class DefinitionHandler extends StmtHandler {
         }
 
         if (LeftOp instanceof Local) {
-            out.put((Local) LeftOp, rightVal);
+            out.put(LeftOp, rightVal);
         } else if (LeftOp instanceof InstanceFieldRef) {
             System.out.println("\033[32mDefinitionStmt: Not implemented-Left: \033[0m" +
                     LeftOp.getClass().getName());
@@ -57,7 +57,7 @@ public class DefinitionHandler extends StmtHandler {
     }
 
     private TreeSet<Integer> handleCast(Anderson ad, StoreType in, DefinitionStmt st) {
-        return new TreeSet<>(in.get((Local)st.getRightOp()));
+        return new TreeSet<>(in.getPointsToSet((Local)st.getRightOp()));
     }
 
     private TreeSet<Integer> handleField(Anderson ad, StoreType in, DefinitionStmt st) {

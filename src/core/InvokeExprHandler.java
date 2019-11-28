@@ -23,11 +23,11 @@ public class InvokeExprHandler {
         DirectedGraph graph = new ExceptionalUnitGraph(m.retrieveActiveBody());
         Anderson anderson = new Anderson(graph, ad.curPrefix + m.getName());
 
-        Map<Local, TreeSet<Integer>> sonArgs = new HashMap<>();
+        StoreType sonArgs = new StoreType();
         List<Value> args = ie.getArgs();
         for (Value arg : args) {
             if (arg instanceof Local) {
-                sonArgs.put((Local) arg, in.get(arg));
+                sonArgs.put((Local) arg, in.getPointsToSet(arg));
             }
         }
         anderson.run(ad.pts, ad.queries, res, sonArgs);

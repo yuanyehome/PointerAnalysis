@@ -21,7 +21,7 @@ public class Anderson extends ForwardFlowAnalysis {
     TreeMap<Integer, TreeSet<Integer>> queries =
             new TreeMap<>(); // record query info
     TreeSet<Integer> result = new TreeSet<>();
-    Map<Local, TreeSet<Integer>> args = new HashMap<>();
+    StoreType args = new StoreType();
     String
             curPrefix; // used for function calls, to distinguish different local vals
 
@@ -32,7 +32,7 @@ public class Anderson extends ForwardFlowAnalysis {
 
     void run(Map<Local, TreeSet<Integer>> _pts,
              TreeMap<Integer, TreeSet<Integer>> _queries,
-             TreeSet<Integer> _result, Map<Local, TreeSet<Integer>> _args) {
+             TreeSet<Integer> _result, StoreType _args) {
         System.out.println(curPrefix + " Previous arguments:" + _args.toString());
         args.putAll(_args);
         doAnalysis(); // analysis main body (implemented in FlowAnalysis)
@@ -47,6 +47,7 @@ public class Anderson extends ForwardFlowAnalysis {
         return new StoreType();
     }
 
+    /*
     @Override
     protected Object entryInitialFlow() {
         Logger.getLogger("").warning("Fuck it!");
@@ -54,6 +55,7 @@ public class Anderson extends ForwardFlowAnalysis {
         copy(args, ret);
         return ret;
     }
+    */
 
     // deep copy for HashMap
     protected void copy(Object _src, Object _dest) {
@@ -62,9 +64,6 @@ public class Anderson extends ForwardFlowAnalysis {
         dest = (StoreType) _dest;
         dest.clear();
         dest.copyFrom(src);
-//        for (Map.Entry<Local, TreeSet<Integer>> e : src.entrySet()) {
-//            dest.put(e.getKey(), new TreeSet<Integer>(e.getValue()));
-//        }
     }
 
     protected void merge(Object _in1, Object _in2, Object _out) {

@@ -4,32 +4,44 @@ import soot.Value;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 
 
 public class StoreType {
     private static int deepestLayer = 3;
     public Map<Value, StoreType> table;
-    public TreeSet<Integer> mapList;
+    public TreeSet<Integer> pointsToSet;
 
     StoreType() {
         table = new HashMap<>();
-        mapList = new TreeSet<>();
+        pointsToSet = new TreeSet<>();
     }
 
     StoreType(StoreType st) {
-        for (Map.Entry<Value, StoreType> e : st.table.entrySet()) {
-            table.put(e.getKey(), new StoreType(e.getValue()));
+        if (st.table.isEmpty()) {
+            table = new HashMap<>();
+        } else {
+            for (Map.Entry<Value, StoreType> e : st.table.entrySet()) {
+                table.put(e.getKey(), new StoreType(e.getValue()));
+            }
         }
-        mapList = new TreeSet<>(st.mapList);
+        pointsToSet = new TreeSet<>(st.pointsToSet);
     }
 
-    TreeSet<Integer> get(Value v) {
-        return table.get(v).mapList;
+    StoreType get(Value v) {
+        return table.get(v);
+    }
+
+    TreeSet<Integer> getPointsToSet(Value v) {
+        return table.get(v).pointsToSet;
     }
 
     void put(Value v, TreeSet<Integer> ts) {
-        table.get(v).mapList = new TreeSet<>(ts);
+        if (!table.containsKey(v)) {
+            table.put(v, new StoreType());
+        }
+        table.get(v).pointsToSet = new TreeSet<>(ts);
     }
 
     void putAll(StoreType st) {
@@ -40,10 +52,14 @@ public class StoreType {
         table.clear();
     }
 
+    Set<Map.Entry<Value, StoreType>> entrySet() {
+        return table.entrySet();
+    }
+
     void mergeFrom(StoreType st) {
         for (Map.Entry<Value, StoreType> e : st.table.entrySet()) {
             if (table.containsKey(e.getKey())) {
-                table.get(e.getKey()).putAll(e.getValue());
+                table.get(e.getKey()).pointsToSet.addAll(e.getValue().pointsToSet);
             } else {
                 table.put(e.getKey(), new StoreType(e.getValue()));
             }

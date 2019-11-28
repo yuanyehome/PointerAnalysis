@@ -42,7 +42,7 @@ public class InvokeHandler extends StmtHandler {
         int id = ((IntConstant) ie.getArgs().get(0)).value;
         if (!ad.pts.containsKey(lv))
             ad.pts.put(lv, new TreeSet<Integer>());
-        ad.pts.get(lv).addAll(in.get(lv));
+        ad.pts.get(lv).addAll(in.getPointsToSet(lv));
         ad.queries.put(id, new TreeSet<Integer>(ad.pts.get(lv)));
     }
 }
