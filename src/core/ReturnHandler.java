@@ -8,6 +8,9 @@ import soot.jimple.ReturnStmt;
 import java.util.Map;
 import java.util.TreeSet;
 
+/**
+ * @author yangchenyang
+ */
 public class ReturnHandler extends StmtHandler {
     @Override
     public void handle(Anderson ad, StoreType in, Unit u, StoreType out) {
@@ -19,7 +22,7 @@ public class ReturnHandler extends StmtHandler {
         if (u instanceof ReturnStmt) {
             Value returnOp = ((ReturnStmt) u).getOp();
             if (returnOp instanceof Local) {
-                ad.result.addAll(in.getPointsToSet(returnOp)); // TODO: ???
+                ad.result.addAll(in.getPointsToSet(returnOp));
             }
         }
     }

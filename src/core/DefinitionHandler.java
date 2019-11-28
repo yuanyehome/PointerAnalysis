@@ -10,44 +10,47 @@ import sun.security.jca.GetInstance;
 import java.util.Map;
 import java.util.TreeSet;
 
+/**
+ * @author all
+ */
 public class DefinitionHandler extends StmtHandler {
     @Override
     public void handle(Anderson ad, StoreType in, Unit u, StoreType out) {
         DefinitionStmt du = (DefinitionStmt) u;
-        Value RightOp = du.getRightOp();
-        Value LeftOp = du.getLeftOp();
+        Value rightOp = du.getRightOp();
+        Value leftOp = du.getLeftOp();
 
         TreeSet<Integer> rightVal = new TreeSet<>();
 
-        if (RightOp instanceof AnyNewExpr) {
+        if (rightOp instanceof AnyNewExpr) {
             if (ad.isChecked) {
                 rightVal.add(ad.allocId);
                 ad.isChecked = false;
             } else rightVal.add(0);
-        } else if (RightOp instanceof Local) {
+        } else if (rightOp instanceof Local) {
             // a = *b in Anderson
-            Local from = (Local) RightOp;
+            Local from = (Local) rightOp;
             rightVal.addAll(in.getPointsToSet(from));
-        } else if (RightOp instanceof CastExpr) {
+        } else if (rightOp instanceof CastExpr) {
             rightVal = handleCast(ad, in, du);
-        } else if (RightOp instanceof InvokeExpr) {
-            // TODO
-        } else if (RightOp instanceof InstanceFieldRef) {
+        } else if (rightOp instanceof InvokeExpr) {
+            new InvokeExprHandler().run(ad, (InvokeExpr) rightOp, rightVal, in, out);
+        } else if (rightOp instanceof InstanceFieldRef) {
             rightVal = handleField(ad, in, du);
         } else {
-            System.out.println("\033[33mDefinitionStmt: Not implemented - Right: \033[0m" + RightOp.getClass().getName());
+            System.out.println("\033[33mDefinitionStmt: Not implemented - Right: \033[0m" + rightOp.getClass().getName());
         }
 
-        if (LeftOp instanceof Local) {
-            out.put(LeftOp, rightVal);
-        } else if (LeftOp instanceof InstanceFieldRef) {
+        if (leftOp instanceof Local) {
+            out.put(leftOp, rightVal);
+        } else if (leftOp instanceof InstanceFieldRef) {
             System.out.println("\033[32mDefinitionStmt: Not implemented-Left: \033[0m" +
-                    LeftOp.getClass().getName());
-            // out.put((Local) LeftOp, RightVal);
+                    leftOp.getClass().getName());
+            // out.put((Local) leftOp, RightVal);
         } else {
             System.out.println(
                     "\033[32mDefinitionStmt: Not implemented - Left: \033[0m" +
-                            LeftOp.getClass().getName());
+                            leftOp.getClass().getName());
         }
 
         /*

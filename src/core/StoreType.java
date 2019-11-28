@@ -7,7 +7,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-
+/**
+ * @author guanzhichao
+ */
 public class StoreType {
     private static int deepestLayer = 3;
     public Map<Value, StoreType> table;
@@ -67,8 +69,12 @@ public class StoreType {
     }
 
     void copyFrom(StoreType src) {
-        for (Map.Entry<Value, StoreType> e : src.table.entrySet()) {
-            table.put(e.getKey(), new StoreType(e.getValue()));
+        if (src.table.isEmpty()) {
+            table = new HashMap<>();
+        } else {
+            for (Map.Entry<Value, StoreType> e : src.table.entrySet()) {
+                table.put(e.getKey(), new StoreType(e.getValue()));
+            }
         }
     }
 }
