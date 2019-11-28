@@ -8,11 +8,13 @@ import soot.toolkits.graph.DirectedGraph;
 import soot.toolkits.scalar.ForwardFlowAnalysis;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 // TODO whether the location of test has impact on results
 public class Anderson extends ForwardFlowAnalysis {
-    public static int allocId = 0;
-    public static boolean isChecked = false;
+    public int allocId = 0;
+    public boolean isChecked = false;
+
     Map<Local, TreeSet<Integer>> pts = new HashMap<>(); // points-to set, each local a state
     TreeMap<Integer, TreeSet<Integer>> queries = new TreeMap<>(); // record query info
     TreeSet<Integer> result = new TreeSet<>();
@@ -26,7 +28,6 @@ public class Anderson extends ForwardFlowAnalysis {
 
     void run(Map<Local, TreeSet<Integer>> _pts, TreeMap<Integer, TreeSet<Integer>> _queries,
              TreeSet<Integer> _result, Map<Local, TreeSet<Integer>> _args) {
-//		System.out.println(curPrefix);
         System.out.println(curPrefix + " Previous arguments:" + _args.toString());
         args.putAll(_args);
         doAnalysis(); // analysis main body (implemented in FlowAnalysis)
@@ -80,6 +81,13 @@ public class Anderson extends ForwardFlowAnalysis {
     }
 
     // transform function
+
+    /**
+     * @param _in   Points-To Set before this statement
+     * @param _data Common `Unit` type, will be a specific statement
+     * @param _out  Points-To Set after this statement
+     */
+    @Override
     protected void flowThrough(Object _in, Object _data, Object _out) {
         Map<Local, TreeSet<Integer>> in, out;
         in = (Map<Local, TreeSet<Integer>>) _in;
@@ -123,46 +131,7 @@ public class Anderson extends ForwardFlowAnalysis {
 
             // TODO Implement better analysis for function calls
         } else if (u instanceof DefinitionStmt) {
-            Value RightOp = ((DefinitionStmt) u).getRightOp();
-            Value LeftOp = ((DefinitionStmt) u).getLeftOp();
-            TreeSet<Integer> RightVal = new TreeSet<Integer>();
-
-            if (RightOp instanceof NewExpr || RightOp instanceof NewArrayExpr
-                    || RightOp instanceof NewMultiArrayExpr) {
-                Local to = (Local) ((DefinitionStmt) u).getLeftOp();
-                if (isChecked) {
-                    RightVal.add(allocId);
-                    isChecked = false;
-                } else RightVal.add(0);
-            } else if (RightOp instanceof Local) {
-                Local from = (Local) RightOp;
-                RightVal.addAll(in.get(from));
-            }
-//			else if (RightOp instanceof NewArrayExpr) {
-//				ArrayHandler handler = new ArrayHandler();
-//				handler.run(this, _in, _data);
-//			}
-            // Don't delete, just for future work
-            else if (RightOp instanceof CastExpr) {
-                new CastHandler().run(this, _in, _data);
-            } else if (RightOp instanceof InvokeExpr) {
-                new InvokeExprHandler().run(this, (InvokeExpr) RightOp, RightVal, in, out);
-            } else if (RightOp instanceof Ref) {
-
-            } else {
-                System.out.println("DefinitionStmt: Not implemented: " + RightOp.getClass().getName());
-            }
-
-
-            if (LeftOp instanceof Local) {
-                out.put((Local) LeftOp, RightVal);
-            }
-
-			/*
-			TODO Deal with other types of left/right Op.
-			TODO Deal with arrays.
-			TODO Deal with fields.
-			 */
+            new DefinitionHandler().handle(this, in, u, out);
         } else if (u instanceof ReturnStmt || u instanceof ReturnVoidStmt) {
             System.out.println(curPrefix + " args: " + args.toString());
             System.out.println(curPrefix + " in: " + in.toString());
@@ -175,8 +144,6 @@ public class Anderson extends ForwardFlowAnalysis {
                     result.addAll(in.get(returnOp));
                 }
             }
-        } else if (u instanceof IfStmt) {
-            System.out.println("\033[32mIfStmt not implemented\033[0m: " + u.getClass().getName());
         } else {
             System.out.println("Stmt not implemented: " + u.getClass().getName());
         }
