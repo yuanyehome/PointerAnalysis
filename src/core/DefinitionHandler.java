@@ -7,6 +7,8 @@ import soot.Value;
 import soot.jimple.*;
 import sun.security.jca.GetInstance;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
@@ -20,6 +22,7 @@ public class DefinitionHandler extends StmtHandler {
         TreeSet<Integer> rightVal = new TreeSet<>();
 
         if (RightOp instanceof AnyNewExpr) {
+            System.out.println("\033[32m[DEBUG] [NEW]\033[0m");
             if (ad.isChecked) {
                 rightVal.add(ad.allocId);
                 ad.isChecked = false;
@@ -41,8 +44,7 @@ public class DefinitionHandler extends StmtHandler {
         if (LeftOp instanceof Local) {
             out.put(LeftOp, rightVal);
         } else if (LeftOp instanceof InstanceFieldRef) {
-            System.out.println("\033[32mDefinitionStmt: Not implemented-Left: \033[0m" +
-                    LeftOp.getClass().getName());
+            handleLeftField(ad, out, du, rightVal);
             // out.put((Local) LeftOp, RightVal);
         } else {
             System.out.println(
@@ -61,17 +63,36 @@ public class DefinitionHandler extends StmtHandler {
     }
 
     private TreeSet<Integer> handleField(Anderson ad, StoreType in, DefinitionStmt st) {
-//        InstanceFieldRef Field = (InstanceFieldRef) st.getRightOp();
-//        InstanceFieldRef tmpField = Field;
-//        int cnt = 0;
-//        while (!(tmpField.getBase() instanceof Local)) {
-//            ++cnt;
-//            tmpField = (InstanceFieldRef) tmpField.getBase();
-//            // a.b.c.d.e => cnt = 4
-//        }
-//        Local root = (Local) tmpField.getBase();
-        return new TreeSet<>();
-        // TODO check if -1->find root->find deepest field->give value
+        InstanceFieldRef tmpField = (InstanceFieldRef) st.getRightOp();
+        return in.queryField((tmpField));
     }
 
+    private void handleLeftField(Anderson ad, StoreType out, DefinitionStmt st, TreeSet<Integer>rightVal) {
+        InstanceFieldRef tmpField = (InstanceFieldRef) st.getRightOp();
+        List<Value> values = new ArrayList<Value>();
+        int cnt = 0;
+        while (!(tmpField.getBase() instanceof Local)) {
+            ++cnt;
+            values.add(tmpField);
+            tmpField = (InstanceFieldRef) tmpField.getBase();
+            // a.b.c.d.e => cnt = 4
+        }
+        values.add(tmpField);
+        values.add(tmpField.getBase());
+        int present = 0;
+        int layer = Math.min(cnt + 1, StoreType.deepestLayer);
+        boolean flag = (cnt + 1 <= StoreType.deepestLayer);
+        StoreType presentElement = out;
+        while (layer != 0) {
+            presentElement = presentElement.get(values.get(present));
+            present++;
+            layer--;
+        }
+        if (flag) {
+            presentElement.put(values.get(present), rightVal);
+        }
+        else {
+            presentElement.mergeFrom(values.get(present), rightVal);
+        }
+    }
 }

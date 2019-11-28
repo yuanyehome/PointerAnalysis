@@ -1,15 +1,14 @@
 package core;
 
+import soot.Local;
 import soot.Value;
+import soot.jimple.InstanceFieldRef;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 
 public class StoreType {
-    private static int deepestLayer = 3;
+    public static int deepestLayer = 3;
     public Map<Value, StoreType> table;
     public TreeSet<Integer> pointsToSet;
 
@@ -64,6 +63,38 @@ public class StoreType {
                 table.put(e.getKey(), new StoreType(e.getValue()));
             }
         }
+    }
+
+    void mergeFrom(Value key, TreeSet<Integer> ts) {
+        if (table.containsKey(key)) {
+            table.get(key).pointsToSet.addAll(ts);
+        } else {
+            StoreType tmp = new StoreType();
+            tmp.pointsToSet = new TreeSet<>(ts);
+            table.put(key, tmp);
+        }
+    }
+
+    TreeSet<Integer> queryField(InstanceFieldRef query) {
+        List<Value> values = new ArrayList<Value>();
+        int cnt = 0;
+        while (!(query.getBase() instanceof Local)) {
+            ++cnt;
+            values.add(query);
+            query = (InstanceFieldRef) query.getBase();
+            // a.b.c.d.e => cnt = 4
+        }
+        values.add(query);
+        values.add(query.getBase());
+        int present = 0;
+        int layer = Math.min(cnt + 1, StoreType.deepestLayer);
+        StoreType presentElement = new StoreType(this);
+        while (layer != 0) {
+            presentElement = presentElement.get(values.get(present));
+            present++;
+            layer--;
+        }
+        return presentElement.getPointsToSet(values.get(present));
     }
 
     void copyFrom(StoreType src) {
