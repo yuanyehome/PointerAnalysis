@@ -9,7 +9,7 @@ import java.util.*;
 
 public class StoreType {
     public static int deepestLayer = 3;
-    public Map<Value, StoreType> table;
+    public Map<Value, StoreType> table = new HashMap<>();
     public TreeSet<Integer> pointsToSet;
 
     StoreType() {
@@ -25,7 +25,11 @@ public class StoreType {
                 table.put(e.getKey(), new StoreType(e.getValue()));
             }
         }
-        pointsToSet = new TreeSet<>(st.pointsToSet);
+        if (st.pointsToSet.size() == 0) {
+            pointsToSet = new TreeSet<>();
+        } else{
+            pointsToSet = new TreeSet<Integer>(st.pointsToSet);
+        }
     }
 
     StoreType get(Value v) {
@@ -40,7 +44,7 @@ public class StoreType {
         if (!table.containsKey(v)) {
             table.put(v, new StoreType());
         }
-        table.get(v).pointsToSet = new TreeSet<>(ts);
+        table.get(v).pointsToSet = new TreeSet<Integer>(ts);
     }
 
     void putAll(StoreType st) {

@@ -44,6 +44,7 @@ public class DefinitionHandler extends StmtHandler {
         if (LeftOp instanceof Local) {
             out.put(LeftOp, rightVal);
         } else if (LeftOp instanceof InstanceFieldRef) {
+            if (rightVal.size() == 0) return;
             handleLeftField(ad, out, du, rightVal);
             // out.put((Local) LeftOp, RightVal);
         } else {
@@ -68,21 +69,21 @@ public class DefinitionHandler extends StmtHandler {
     }
 
     private void handleLeftField(Anderson ad, StoreType out, DefinitionStmt st, TreeSet<Integer>rightVal) {
-        InstanceFieldRef tmpField = (InstanceFieldRef) st.getRightOp();
+        InstanceFieldRef tmpField = (InstanceFieldRef) st.getLeftOp();
         List<Value> values = new ArrayList<Value>();
         int cnt = 0;
         while (!(tmpField.getBase() instanceof Local)) {
             ++cnt;
-            values.add(tmpField);
+            values.add(0, tmpField);
             tmpField = (InstanceFieldRef) tmpField.getBase();
             // a.b.c.d.e => cnt = 4
         }
-        values.add(tmpField);
-        values.add(tmpField.getBase());
+        values.add(0, tmpField);
+        values.add(0, tmpField.getBase());
         int present = 0;
         int layer = Math.min(cnt + 1, StoreType.deepestLayer);
         boolean flag = (cnt + 1 <= StoreType.deepestLayer);
-        StoreType presentElement = out;
+        StoreType presentElement = new StoreType(out);
         while (layer != 0) {
             presentElement = presentElement.get(values.get(present));
             present++;
