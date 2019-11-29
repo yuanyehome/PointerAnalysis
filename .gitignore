@@ -4,3 +4,5 @@ bin/*
 sootOutput/*
 result.txt
 *.zip
+code/sootOutput/*
+code/test/*.class
