@@ -102,6 +102,17 @@ public class FieldsOfValue extends HashMap<Value, TreeSet<Integer>> {
         }
     }
 
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder(super.toString());
+        s.append(" \nFields: {\n");
+        for (Map.Entry<Value, FieldsOfValue> e : fields.entrySet()) {
+            s.append(e.getKey().toString()).append(": ").append(e.getValue().toString());
+        }
+        s.append("}\n");
+        return s.toString();
+    }
+
     private TreeSet<Integer> get(Value v, List<Value> bases, int depth) {
         if (bases.size() == 1) {
             return super.get(v);
@@ -135,7 +146,6 @@ public class FieldsOfValue extends HashMap<Value, TreeSet<Integer>> {
 
     private List<Value> getBases(Value v) {
         List<Value> bases = new ArrayList<>();
-        int cnt = 0;
         while (v instanceof InstanceFieldRef) {
             bases.add(0, v);
             v = ((InstanceFieldRef) v).getBase();

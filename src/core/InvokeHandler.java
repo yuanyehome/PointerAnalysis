@@ -1,14 +1,11 @@
 package core;
 
-import soot.Local;
 import soot.Unit;
 import soot.Value;
-import soot.jimple.InstanceFieldRef;
 import soot.jimple.IntConstant;
 import soot.jimple.InvokeExpr;
 import soot.jimple.InvokeStmt;
 
-import java.util.Map;
 import java.util.TreeSet;
 
 /**

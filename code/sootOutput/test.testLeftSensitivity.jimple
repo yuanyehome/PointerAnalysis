@@ -1,0 +1,57 @@
+public class test.testLeftSensitivity extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        test.testLeftSensitivity r0;
+
+        r0 := @this: test.testLeftSensitivity;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void main(java.lang.String[])
+    {
+        java.lang.String[] r0;
+        benchmark.objects.A $r5, $r6, $r7;
+        benchmark.objects.B $r8, $r9;
+
+        r0 := @parameter0: java.lang.String[];
+
+        staticinvoke <benchmark.internal.BenchmarkN: void alloc(int)>(1);
+
+        $r5 = new benchmark.objects.A;
+
+        specialinvoke $r5.<benchmark.objects.A: void <init>()>();
+
+        staticinvoke <benchmark.internal.BenchmarkN: void alloc(int)>(2);
+
+        $r6 = new benchmark.objects.A;
+
+        specialinvoke $r6.<benchmark.objects.A: void <init>()>();
+
+        staticinvoke <benchmark.internal.BenchmarkN: void alloc(int)>(3);
+
+        $r7 = new benchmark.objects.A;
+
+        specialinvoke $r7.<benchmark.objects.A: void <init>()>();
+
+        staticinvoke <benchmark.internal.BenchmarkN: void alloc(int)>(4);
+
+        $r8 = new benchmark.objects.B;
+
+        specialinvoke $r8.<benchmark.objects.B: void <init>()>();
+
+        $r5.<benchmark.objects.A: benchmark.objects.B f> = $r8;
+
+        $r9 = $r5.<benchmark.objects.A: benchmark.objects.B f>;
+
+        staticinvoke <benchmark.internal.BenchmarkN: void test(int,java.lang.Object)>(2, $r9);
+
+        staticinvoke <benchmark.internal.BenchmarkN: void test(int,java.lang.Object)>(3, $r8);
+
+        return;
+    }
+}

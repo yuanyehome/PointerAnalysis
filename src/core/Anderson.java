@@ -2,7 +2,6 @@ package core;
 
 import soot.Local;
 import soot.Unit;
-import soot.Value;
 import soot.jimple.DefinitionStmt;
 import soot.jimple.InvokeStmt;
 import soot.jimple.ReturnStmt;
@@ -10,8 +9,10 @@ import soot.jimple.ReturnVoidStmt;
 import soot.toolkits.graph.DirectedGraph;
 import soot.toolkits.scalar.ForwardFlowAnalysis;
 
-import java.util.*;
-import java.util.logging.Logger;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class Anderson extends ForwardFlowAnalysis {
     public int allocId = 0;

@@ -1,13 +1,10 @@
 package core;
 
-import com.sun.xml.internal.ws.wsdl.writer.document.Definitions;
 import soot.Local;
 import soot.Unit;
 import soot.Value;
 import soot.jimple.*;
-import sun.security.jca.GetInstance;
 
-import java.util.Map;
 import java.util.TreeSet;
 
 /**

@@ -1,6 +1,9 @@
 package core;
 
-import soot.*;
+import soot.Scene;
+import soot.SceneTransformer;
+import soot.SootClass;
+import soot.SootMethod;
 import soot.toolkits.graph.DirectedGraph;
 import soot.toolkits.graph.ExceptionalUnitGraph;
 
@@ -42,7 +45,6 @@ public class WholeProgramTransformer extends SceneTransformer {
         }
         System.out.println(answer);
         AnswerPrinter.printAnswer(answer.toString());
-
     }
 
 }

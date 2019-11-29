@@ -1,6 +1,5 @@
 package core;
 
-import fj.data.Tree;
 import soot.Value;
 import soot.jimple.InstanceFieldRef;
 
@@ -115,13 +114,13 @@ public class FieldsOfValueByStr extends HashMap<String, TreeSet<Integer>> {
 
     @Override
     public String toString() {
-        String s = super.toString();
-        s = s + " {\n";
+        StringBuilder s = new StringBuilder(super.toString());
+        s.append(" \nFields: {\n");
         for (Map.Entry<String, FieldsOfValueByStr> e : fields.entrySet()) {
-            s = s + e.getKey() + ": " + e.getValue().toString();
+            s.append(e.getKey()).append(": ").append(e.getValue().toString());
         }
-        s = s + "}\n";
-        return s;
+        s.append("}\n");
+        return s.toString();
     }
 
     private TreeSet<Integer> get(Value v, List<String> bases, int depth) {
@@ -157,7 +156,6 @@ public class FieldsOfValueByStr extends HashMap<String, TreeSet<Integer>> {
 
     private List<String> getBases(Value v) {
         List<String> bases = new ArrayList<>();
-        int cnt = 0;
         while (v instanceof InstanceFieldRef) {
             bases.add(0, v.toString());
             v = ((InstanceFieldRef) v).getBase();

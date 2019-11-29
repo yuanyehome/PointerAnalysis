@@ -1,11 +1,7 @@
 package core;
 
-import soot.Local;
 import soot.Unit;
 
-import java.awt.*;
-import java.util.Map;
-import java.util.TreeSet;
 import java.util.logging.Logger;
 
 /**
