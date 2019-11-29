@@ -10,15 +10,12 @@ public class TestRightSensitivity {
         BenchmarkN.alloc(1);
         A a = new A();
         BenchmarkN.alloc(2);
-        A b = new A();
+        B b = new B();
         BenchmarkN.alloc(3);
-        A c = new A();
-        BenchmarkN.alloc(4);
-        B bb = new B();
-        if (args.length > 1) a = b;
-        if (args.length > 2) b = c;
-        bb = a.f;
-        // BenchmarkN.test(2, a.f);
-        BenchmarkN.test(3, bb);
+//         A c = new A();
+//         if (args.length > 1) a = c;
+//         BenchmarkN.test(2, a.f);
+        b = a.f;
+        BenchmarkN.test(1, b);
     }
 }
