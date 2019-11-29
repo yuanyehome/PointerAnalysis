@@ -15,9 +15,8 @@ public class test.TestRightSensitivity extends java.lang.Object
     public static void main(java.lang.String[])
     {
         java.lang.String[] r0;
-        benchmark.objects.A $r2, $r3, $r4, r6;
-        benchmark.objects.B $r5, r10;
-        int $i0, $i1;
+        benchmark.objects.A $r2;
+        benchmark.objects.B $r3, r5;
 
         r0 := @parameter0: java.lang.String[];
 
@@ -27,43 +26,17 @@ public class test.TestRightSensitivity extends java.lang.Object
 
         specialinvoke $r2.<benchmark.objects.A: void <init>()>();
 
-        r6 = $r2;
-
         staticinvoke <benchmark.internal.BenchmarkN: void alloc(int)>(2);
 
-        $r3 = new benchmark.objects.A;
+        $r3 = new benchmark.objects.B;
 
-        specialinvoke $r3.<benchmark.objects.A: void <init>()>();
+        specialinvoke $r3.<benchmark.objects.B: void <init>()>();
 
         staticinvoke <benchmark.internal.BenchmarkN: void alloc(int)>(3);
 
-        $r4 = new benchmark.objects.A;
+        r5 = $r2.<benchmark.objects.A: benchmark.objects.B f>;
 
-        specialinvoke $r4.<benchmark.objects.A: void <init>()>();
-
-        staticinvoke <benchmark.internal.BenchmarkN: void alloc(int)>(4);
-
-        $r5 = new benchmark.objects.B;
-
-        specialinvoke $r5.<benchmark.objects.B: void <init>()>();
-
-        $i0 = lengthof r0;
-
-        if $i0 <= 1 goto label1;
-
-        r6 = $r3;
-
-     label1:
-        $i1 = lengthof r0;
-
-        if $i1 <= 2 goto label2;
-
-     label2:
-        r10 = r6.<benchmark.objects.A: benchmark.objects.B f>;
-
-        staticinvoke <benchmark.internal.BenchmarkN: void test(int,java.lang.Object)>(2, r6);
-
-        staticinvoke <benchmark.internal.BenchmarkN: void test(int,java.lang.Object)>(3, r10);
+        staticinvoke <benchmark.internal.BenchmarkN: void test(int,java.lang.Object)>(1, r5);
 
         return;
     }

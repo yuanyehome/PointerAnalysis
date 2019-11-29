@@ -3,7 +3,7 @@ package test;
 import benchmark.internal.BenchmarkN;
 import benchmark.objects.A;
 
-public class Hello {
+public class TestDefaultNumber {
 
     public static void main(String[] args) {
         BenchmarkN.alloc(1);

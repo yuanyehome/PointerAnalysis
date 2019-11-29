@@ -13,6 +13,6 @@ public class TestLeftSensitivity {
         B b = new B();
         a.f = b;
         BenchmarkN.test(1, a.f);
-        BenchmarkN.test(2, bb);
+        BenchmarkN.test(2, b);
     }
 }
