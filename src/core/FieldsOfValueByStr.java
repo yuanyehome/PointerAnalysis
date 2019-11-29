@@ -125,7 +125,7 @@ public class FieldsOfValueByStr extends HashMap<String, TreeSet<Integer>> {
 
     private TreeSet<Integer> get(Value v, List<String> bases, int depth) {
         if (bases.size() == 1) {
-            return super.get(v);
+            return super.get(v.toString());
         } else if (depth == deepestLayer) {
             String base = bases.remove(0);
             return super.get(base);

@@ -6,6 +6,7 @@ import soot.Value;
 import soot.jimple.*;
 
 import java.util.TreeSet;
+import java.util.logging.Logger;
 
 /**
  * @author all
@@ -14,12 +15,13 @@ public class DefinitionHandler extends StmtHandler {
     private TreeSet<Integer> rightVal = new TreeSet<>();
 
     @Override
-        public void handle(Anderson ad, RuntimeEnv in, Unit u, RuntimeEnv out) {
-            DefinitionStmt du = (DefinitionStmt) u;
-            Value rightOp = du.getRightOp();
-            Value leftOp = du.getLeftOp();
+    public void handle(Anderson ad, RuntimeEnv in, Unit u, RuntimeEnv out) {
+        DefinitionStmt du = (DefinitionStmt) u;
+        Value rightOp = du.getRightOp();
+        Value leftOp = du.getLeftOp();
 
         if (rightOp instanceof AnyNewExpr) {
+            Logger.getLogger("").warning("New here!!!" + rightOp.toString());
             if (ad.isChecked) {
                 rightVal.add(ad.allocId);
                 ad.isChecked = false;
