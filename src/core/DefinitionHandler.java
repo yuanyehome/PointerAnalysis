@@ -17,10 +17,10 @@ public class DefinitionHandler extends StmtHandler {
     private TreeSet<Integer> rightVal = new TreeSet<>();
 
     @Override
-    public void handle(Anderson ad, RuntimeEnv in, Unit u, RuntimeEnv out) {
-        DefinitionStmt du = (DefinitionStmt) u;
-        Value rightOp = du.getRightOp();
-        Value leftOp = du.getLeftOp();
+        public void handle(Anderson ad, RuntimeEnv in, Unit u, RuntimeEnv out) {
+            DefinitionStmt du = (DefinitionStmt) u;
+            Value rightOp = du.getRightOp();
+            Value leftOp = du.getLeftOp();
 
         if (rightOp instanceof AnyNewExpr) {
             if (ad.isChecked) {

@@ -17,7 +17,7 @@ public class Anderson extends ForwardFlowAnalysis {
     public int allocId = 0;
     public boolean isChecked = false;
 
-    Map<Local, TreeSet<Integer>> pts =
+    Map<String, TreeSet<Integer>> pts =
             new HashMap<>(); // points-to set, each local a state
     TreeMap<Integer, TreeSet<Integer>> queries =
             new TreeMap<>(); // record query info
@@ -30,7 +30,7 @@ public class Anderson extends ForwardFlowAnalysis {
         curPrefix = _curPrefix + '/';
     }
 
-    void run(Map<Local, TreeSet<Integer>> _pts,
+    void run(Map<String, TreeSet<Integer>> _pts,
              TreeMap<Integer, TreeSet<Integer>> _queries,
              TreeSet<Integer> _result, RuntimeEnv _args) {
         System.out.println(curPrefix + " Previous arguments:" + _args.toString());

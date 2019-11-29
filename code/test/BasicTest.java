@@ -3,7 +3,7 @@ package test;
 import benchmark.internal.BenchmarkN;
 import benchmark.objects.A;
 
-public class Hello {
+public class BasicTest {
 
     public static void internal() {
         BenchmarkN.alloc(4);
@@ -26,3 +26,11 @@ public class Hello {
         if (args.length > 3) c = a;
     }
 }
+
+/*
+Result:
+  1: 1
+  2: 1 2
+  3: 2 3
+  4: 3
+*/

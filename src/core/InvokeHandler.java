@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.TreeSet;
 
 /**
- * @author yangchenyang guanzhichao
+ * @author all
  */
 public class InvokeHandler extends StmtHandler {
     @Override
@@ -43,13 +43,11 @@ public class InvokeHandler extends StmtHandler {
         Value v = ie.getArgs().get(1);
         int id = ((IntConstant) ie.getArgs().get(0)).value;
 
-        if (!ad.pts.containsKey(v)) {
-            ad.pts.put(v, new TreeSet<>());
+        if (!ad.pts.containsKey(v.toString())) {
+            ad.pts.put(v.toString(), new TreeSet<>());
         }
-        if (v instanceof InstanceFieldRef) {
-            // TODO: what's this?
-        }
-        ad.pts.get(v).addAll(in.get(v));
-        ad.queries.put(id, new TreeSet<Integer>(ad.pts.get(v)));
+        ad.pts.get(v.toString()).addAll(in.get(v.toString()));
+
+        ad.queries.put(id, new TreeSet<Integer>(ad.pts.get(v.toString())));
     }
 }

@@ -16,7 +16,7 @@ public class ReturnHandler extends StmtHandler {
     public void handle(Anderson ad, RuntimeEnv in, Unit u, RuntimeEnv out) {
         System.out.println(ad.curPrefix + " args: " + ad.args.toString());
         System.out.println(ad.curPrefix + " in: " + in.toString());
-        for (Map.Entry<Value, TreeSet<Integer>> e : ad.args.entrySet()) {
+        for (Map.Entry<String, TreeSet<Integer>> e : ad.args.entrySetAll()) {
             e.setValue(in.get(e.getKey()));
         }
         if (u instanceof ReturnStmt) {
