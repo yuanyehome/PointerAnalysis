@@ -27,21 +27,21 @@ public class WholeProgramTransformer extends SceneTransformer {
 
         Map<Local, TreeSet<Integer>> pts = new HashMap<>(); // points-to set, each local a state
         TreeMap<Integer, TreeSet<Integer>> queries = new TreeMap<>();
-        anderson.run(pts, queries, new TreeSet<>(), new StoreType()); // run analysis
+        anderson.run(pts, queries, new TreeSet<>(), new RuntimeEnv()); // run analysis
 
-        String answer = "";
+        StringBuilder answer = new StringBuilder();
         for (Entry<Integer, TreeSet<Integer>> q : queries.entrySet()) {
             TreeSet<Integer> result = q.getValue();
-            answer += q.getKey().toString() + ":";
+            answer.append(q.getKey().toString()).append(":");
             if (result == null)
                 continue;
             for (Integer i : result) {
-                answer += " " + i;
+                answer.append(" ").append(i);
             }
-            answer += "\n";
+            answer.append("\n");
         }
         System.out.println(answer);
-        AnswerPrinter.printAnswer(answer);
+        AnswerPrinter.printAnswer(answer.toString());
 
     }
 
