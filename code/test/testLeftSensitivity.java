@@ -15,8 +15,6 @@ public class testLeftSensitivity {
         A c = new A();
         BenchmarkN.alloc(4);
         B bb = new B();
-        if (args.length > 1) a = b;
-        if (args.length > 2) b = c;
         a.f = bb;
         BenchmarkN.test(2, a.f);
         BenchmarkN.test(3, bb);
