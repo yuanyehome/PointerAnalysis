@@ -6,3 +6,4 @@ result.txt
 *.zip
 code/sootOutput/*
 code/test/*.class
+code/gzc_compile.sh

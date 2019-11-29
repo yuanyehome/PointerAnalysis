@@ -32,7 +32,8 @@ public class DefinitionHandler extends StmtHandler {
         } else if (rightOp instanceof InvokeExpr) {
             new InvokeExprHandler().run(ad, (InvokeExpr) rightOp, rightVal, in, out);
         } else if (rightOp instanceof InstanceFieldRef) {
-            rightVal = handleField(ad, in, du);
+            InstanceFieldRef field = (InstanceFieldRef) rightOp;
+            rightVal.addAll(in.get(field));
         } else {
             System.out.println("\033[33mDefinitionStmt: Not implemented - Right: \033[0m" + rightOp.getClass().getName());
         }
@@ -52,13 +53,7 @@ public class DefinitionHandler extends StmtHandler {
     }
 
     private TreeSet<Integer> handleCast(Anderson ad, RuntimeEnv in, DefinitionStmt st) {
-        return new TreeSet<>(in.get((Local)st.getRightOp()));
-    }
-
-    private TreeSet<Integer> handleField(Anderson ad, RuntimeEnv in, DefinitionStmt st) {
-        InstanceFieldRef field = (InstanceFieldRef) st.getRightOp();
-        // TODO: return in.queryField(tmpField);
-        return new TreeSet<>();
+        return new TreeSet<>(in.get((Local) st.getRightOp()));
     }
 
     private void handleLeftField(Anderson ad, RuntimeEnv out, DefinitionStmt st) {
