@@ -14,8 +14,10 @@ public class BasicTest {
         A c = new A();
         BenchmarkN.test(1, a);
         if (args.length > 1) a = b;
+        if (args.length > 2) b = c;
         BenchmarkN.test(2, a);
-        BenchmarkN.test(3, c);
+        BenchmarkN.test(3, b);
+        BenchmarkN.test(4, c);
     }
 }
 

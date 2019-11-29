@@ -30,7 +30,7 @@ public class WholeProgramTransformer extends SceneTransformer {
 
         Map<String, TreeSet<Integer>> pts = new HashMap<>(); // points-to set, each local a state
         TreeMap<Integer, TreeSet<Integer>> queries = new TreeMap<>();
-        anderson.run(pts, queries, new TreeSet<>(), new RuntimeEnv()); // run analysis
+        anderson.run(pts, queries, new TreeSet<>(), new RuntimeEnv(), new HashMap<>()); // run analysis
 
         StringBuilder answer = new StringBuilder();
         for (Entry<Integer, TreeSet<Integer>> q : queries.entrySet()) {

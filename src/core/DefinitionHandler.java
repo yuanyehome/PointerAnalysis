@@ -36,8 +36,24 @@ public class DefinitionHandler extends StmtHandler {
         } else if (rightOp instanceof InstanceFieldRef) {
             InstanceFieldRef field = (InstanceFieldRef) rightOp;
             rightVal.addAll(in.get(field));
+        } else if (rightOp instanceof ParameterRef) {
+            int i = ((ParameterRef) rightOp).getIndex();
+            if (ad.str2arg.containsKey(Integer.toString(i))) {
+                rightVal.addAll(ad.args.get(ad.str2arg.get(Integer.toString(i))));
+                if (leftOp instanceof Local) {
+                    ad.arg2local.put(ad.str2arg.get(Integer.toString(i)), leftOp);
+                }
+            }
+        } else if (rightOp instanceof ThisRef) {
+            if (ad.str2arg.containsKey("this")) {
+                rightVal.addAll(ad.args.get(ad.str2arg.get("this")));
+                if (leftOp instanceof Local) {
+                    ad.arg2local.put(ad.str2arg.get("this"), leftOp);
+                }
+            }
         } else {
-            System.out.println("\033[33mDefinitionStmt: Not implemented - Right: \033[0m" + rightOp.getClass().getName());
+            System.out.println("\033[33mDefinitionStmt: Not implemented - Right: \033[0m"
+                    + rightOp.getClass().getName());
         }
 
         if (rightVal.size() == 0) return;
@@ -47,9 +63,8 @@ public class DefinitionHandler extends StmtHandler {
         } else if (leftOp instanceof InstanceFieldRef) {
             handleLeftField(ad, out, du);
         } else {
-            System.out.println(
-                    "\033[32mDefinitionStmt: Not implemented - Left: \033[0m" +
-                            leftOp.getClass().getName());
+            System.out.println("\033[32mDefinitionStmt: Not implemented - Left: \033[0m"
+                    + leftOp.getClass().getName());
         }
         // TODO: more type of left/right OP.
     }

@@ -1,13 +1,17 @@
 package core;
 
+import fj.Hash;
 import soot.Local;
 import soot.SootMethod;
 import soot.Value;
+import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.InvokeExpr;
 import soot.toolkits.graph.DirectedGraph;
 import soot.toolkits.graph.ExceptionalUnitGraph;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeSet;
 
 /**
@@ -22,13 +26,22 @@ public class InvokeExprHandler {
         Anderson anderson = new Anderson(graph, ad.curPrefix + m.getName());
 
         RuntimeEnv sonArgs = new RuntimeEnv();
+        Map<String, Value> str2arg = new HashMap<>();
+
+        if (ie instanceof InstanceInvokeExpr) {
+            Value base = ((InstanceInvokeExpr) ie).getBase();
+            sonArgs.put(base, in.get(base));
+            str2arg.put("this", base);
+        }
         List<Value> args = ie.getArgs();
-        for (Value arg : args) {
+        for (int i = 0; i < args.size(); i++) {
+            Value arg = args.get(i);
             if (arg instanceof Local) {
-                sonArgs.put((Local) arg, in.get(arg)); // TODO: right?
+                sonArgs.put(arg, in.get(arg));
+                str2arg.put(Integer.toString(i), arg);
             }
         }
-        anderson.run(ad.pts, ad.queries, res, sonArgs);
+        anderson.run(ad.pts, ad.queries, res, sonArgs, str2arg);
         out.putAll(sonArgs);
     }
 

@@ -13,6 +13,7 @@ import java.util.logging.Logger;
  * For example: {a:{1,2}, a.x:{2,3}, a.y:{3}} will be stored as following:
  *    HashMap: [a: {1, 2}, ...]
  *    Fields:  [a->[x: {2, 3}, y:{3}], ...]
+ *
  * @author guanzhichao
  */
 public class FieldsOfValue extends HashMap<Value, TreeSet<Integer>> {

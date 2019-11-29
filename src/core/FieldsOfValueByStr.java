@@ -13,6 +13,7 @@ import java.util.logging.Logger;
  * For example: {a:{1,2}, a.x:{2,3}, a.y:{3}} will be stored as following:
  *    HashMap: [a: {1, 2}, ...]
  *    Fields:  [a->[x: {2, 3}, y:{3}], ...]
+ *
  * @author guanzhichao
  */
 public class FieldsOfValueByStr extends HashMap<String, TreeSet<Integer>> {
@@ -21,38 +22,35 @@ public class FieldsOfValueByStr extends HashMap<String, TreeSet<Integer>> {
 
     @Override
     public TreeSet<Integer> get(Object obj) {
-        System.out.println("\033[32mGet: " + obj.toString() + "\033[m");
-        System.out.println("\033[32mBefore get: \033[m\n" + this.toString());
+        System.out.println("\033[32mGet " + obj.toString() + " from:\033[m\n" + this.toString());
         if (obj instanceof String) {
             return super.get(obj);
         } else if (!(obj instanceof Value)) {
             Logger.getLogger("").warning("get value error: " + obj.getClass().toString());
-            System.out.println("\033[32mAfter get: \033[m\n" + this.toString());
             return new TreeSet<>();
         } else {
             Value v = (Value) obj;
             if (v instanceof InstanceFieldRef) {
                 List<String> bases = getBases(v);
-                System.out.println("\033[32mAfter get: \033[m\n" + this.toString());
                 return get(v, bases, 0);
             } else {
-                System.out.println("\033[32mAfter get: \033[m\n" + this.toString());
                 return super.get(v.toString());
             }
         }
     }
 
     public TreeSet<Integer> put(Value v, TreeSet<Integer> ts) {
-        System.out.println("\033[32mBefore put: \033[m\n" + this.toString());
-        System.out.println("\033[32mPut: " + v.toString() + "\033[m");
+        System.out.println("\033[32mPut " + v.toString() + " to:\033[m\n" + this.toString());
+
+        TreeSet<Integer> res = new TreeSet<>();
         if (v instanceof InstanceFieldRef) {
             List<String> bases = getBases(v);
-            System.out.println("\033[32mAfter put: \033[m\n" + this.toString());
-            return put(v, ts, bases, 0);
+            res = put(v, ts, bases, 0);
         } else {
-            System.out.println("\033[32mAfter put: \033[m\n" + this.toString());
-            return super.put(v.toString(), ts);
+            res = super.put(v.toString(), ts);
         }
+        System.out.println("\033[After put: \033[m\n" + this.toString());
+        return res;
     }
 
     @Override
