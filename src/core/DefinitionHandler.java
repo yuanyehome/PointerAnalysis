@@ -1,13 +1,10 @@
 package core;
 
-import com.sun.xml.internal.ws.wsdl.writer.document.Definitions;
 import soot.Local;
 import soot.Unit;
 import soot.Value;
 import soot.jimple.*;
-import sun.security.jca.GetInstance;
 
-import java.util.Map;
 import java.util.TreeSet;
 
 public class DefinitionHandler extends StmtHandler {
@@ -31,10 +28,26 @@ public class DefinitionHandler extends StmtHandler {
         } else if (RightOp instanceof CastExpr) {
             rightVal = handleCast(ad, in, du);
         } else if (RightOp instanceof InvokeExpr) {
-            // TODO
+            new InvokeExprHandler().run(ad, (InvokeExpr) RightOp, rightVal, in, out);
         } else if (RightOp instanceof InstanceFieldRef) {
             rightVal = handleField(ad, in, du);
-        } else {
+        } else if (RightOp instanceof ParameterRef) {
+            int i = ((ParameterRef) RightOp).getIndex();
+            if (ad.str2arg.containsKey(Integer.toString(i))) {
+                rightVal.addAll(ad.args.getPointsToSet(ad.str2arg.get(Integer.toString(i))));
+                if (LeftOp instanceof Local) {
+                    ad.arg2local.put(ad.str2arg.get(Integer.toString(i)), LeftOp);
+                }
+            }
+        } else if (RightOp instanceof ThisRef) {
+            if(ad.str2arg.containsKey("this")) {
+                rightVal.addAll(ad.args.getPointsToSet(ad.str2arg.get("this")));
+                if (LeftOp instanceof Local) {
+                    ad.arg2local.put(ad.str2arg.get("this"), LeftOp);
+                }
+            }
+        }
+        else{
             System.out.println("\033[33mDefinitionStmt: Not implemented - Right: \033[0m" + RightOp.getClass().getName());
         }
 

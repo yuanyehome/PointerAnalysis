@@ -2,6 +2,7 @@ package core;
 
 import soot.Local;
 import soot.Unit;
+import soot.Value;
 import soot.jimple.DefinitionStmt;
 import soot.jimple.InvokeStmt;
 import soot.jimple.ReturnStmt;
@@ -10,7 +11,6 @@ import soot.toolkits.graph.DirectedGraph;
 import soot.toolkits.scalar.ForwardFlowAnalysis;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 public class Anderson extends ForwardFlowAnalysis {
     public int allocId = 0;
@@ -22,6 +22,8 @@ public class Anderson extends ForwardFlowAnalysis {
             new TreeMap<>(); // record query info
     TreeSet<Integer> result = new TreeSet<>();
     StoreType args = new StoreType();
+    Map<String, Value> str2arg;
+    Map<Value, Value> arg2local = new HashMap<>();
     String
             curPrefix; // used for function calls, to distinguish different local vals
 
@@ -32,15 +34,16 @@ public class Anderson extends ForwardFlowAnalysis {
 
     void run(Map<Local, TreeSet<Integer>> _pts,
              TreeMap<Integer, TreeSet<Integer>> _queries,
-             TreeSet<Integer> _result, StoreType _args) {
-        System.out.println(curPrefix + " Previous arguments:" + _args.toString());
+             TreeSet<Integer> _result, StoreType _args, Map<String, Value> _str2arg) {
+        System.out.println(curPrefix + " Previous arguments:" + _args.table.toString());
         args.putAll(_args);
+        str2arg = _str2arg;
         doAnalysis(); // analysis main body (implemented in FlowAnalysis)
         _pts.putAll(pts);
         _queries.putAll(queries);
         _result.addAll(result);
         _args.putAll(args);
-        System.out.println(curPrefix + " After arguments:" + _args.toString());
+        System.out.println(curPrefix + " After arguments:" + _args.table.toString());
     }
 
     protected Object newInitialFlow() {

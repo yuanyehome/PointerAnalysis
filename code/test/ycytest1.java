@@ -3,13 +3,20 @@ package test;
 import benchmark.internal.BenchmarkN;
 import benchmark.objects.A;
 
-public class Hello {
+public class ycytest1 {
 
-  public static A internal(A k) {
+  public static void specialchange(A k) {
+    BenchmarkN.alloc(5);
+    A d = new A();
+    System.out.println("Hi!");
+  }
+
+  public A func(A k) {
     BenchmarkN.alloc(4);
     A d = new A();
-    k = d;
-    BenchmarkN.test(4, d);
+    specialchange(k);
+    BenchmarkN.test(5, d);
+    BenchmarkN.test(6, k);
     return d;
   }
 
@@ -24,7 +31,8 @@ public class Hello {
     if (args.length > 1) a = b;
     if (args.length > 2) b = c;
     BenchmarkN.test(2, a);
-    c = internal(b);
+    ycytest1 Y = new ycytest1();
+    c = Y.func(b);
     BenchmarkN.test(3, c);
     BenchmarkN.test(4, b);
   }
