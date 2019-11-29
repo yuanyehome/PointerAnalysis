@@ -2,6 +2,8 @@
 # shellcheck disable=SC2045
 # shellcheck disable=SC2006
 
+rm -rf test/*.class
+rm -rf sootOutput/*
 for i in `ls test/*.java`;
 do
   javac "$i" ;
