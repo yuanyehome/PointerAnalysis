@@ -21,7 +21,7 @@ public class DefinitionHandler extends StmtHandler {
         Value leftOp = du.getLeftOp();
 
         if (rightOp instanceof AnyNewExpr) {
-            Logger.getLogger("").warning("New here!!!" + rightOp.toString());
+            Logger.getLogger("").warning("Here is a new expression" + rightOp.toString());
             if (ad.isChecked) {
                 rightVal.add(ad.allocId);
                 ad.isChecked = false;
