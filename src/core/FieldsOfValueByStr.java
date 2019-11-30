@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  * @author guanzhichao
  */
 public class FieldsOfValueByStr extends HashMap<String, TreeSet<Integer>> {
-    public static int deepestLayer = 3;
+    public static int deepestLayer = 0;
     public Map<String, FieldsOfValueByStr> fields = new HashMap<>();
 
     @Override
@@ -142,7 +142,7 @@ public class FieldsOfValueByStr extends HashMap<String, TreeSet<Integer>> {
             return super.put(v.toString(), ts);
         } else if (depth == deepestLayer) {
             String base = bases.remove(0);
-            return super.put(base, ts);
+            return Merge(base, ts);
         } else {
             String base = bases.remove(0);
             if (!fields.containsKey(base)) {
@@ -150,6 +150,12 @@ public class FieldsOfValueByStr extends HashMap<String, TreeSet<Integer>> {
             }
             return fields.get(base).put(v, ts, bases, depth + 1);
         }
+    }
+
+    private TreeSet<Integer> Merge(String base, TreeSet<Integer> ts) {
+        TreeSet<Integer> _ts = get(base);
+        _ts.addAll(ts);
+        return _ts;
     }
 
     private List<String> getBases(Value v) {

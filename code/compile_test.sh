@@ -12,4 +12,3 @@ do
   java -cp ../sootclasses-trunk-jar-with-dependencies.jar soot.Main -pp -f J -cp . "${tmp%%.java}";
 done
 
-popd
