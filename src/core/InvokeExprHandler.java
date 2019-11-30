@@ -26,19 +26,19 @@ public class InvokeExprHandler {
         Anderson anderson = new Anderson(graph, ad.curPrefix + m.getName());
 
         RuntimeEnv sonArgs = new RuntimeEnv();
-        Map<String, Value> str2arg = new HashMap<>();
+        Map<String, String> str2arg = new HashMap<>();
 
         if (ie instanceof InstanceInvokeExpr) {
             Value base = ((InstanceInvokeExpr) ie).getBase();
             sonArgs.put(base, in.get(base));
-            str2arg.put("this", base);
+            str2arg.put("this", base.toString());
         }
         List<Value> args = ie.getArgs();
         for (int i = 0; i < args.size(); i++) {
             Value arg = args.get(i);
             if (arg instanceof Local) {
                 sonArgs.put(arg, in.get(arg));
-                str2arg.put(Integer.toString(i), arg);
+                str2arg.put(Integer.toString(i), arg.toString());
             }
         }
         anderson.run(ad.pts, ad.queries, res, sonArgs, str2arg);

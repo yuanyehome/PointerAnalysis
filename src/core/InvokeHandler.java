@@ -23,7 +23,14 @@ public class InvokeHandler extends StmtHandler {
             handleAlloc(ad, ie);
         } else if (methodStr.equals(testStr)) {
             handleTest(ad, ie, in);
-        } else {
+        } /*else if (methodStr.equals("<test.SpecialInvokeTest: void specialchange(benchmark.objects.A)>")) {
+            System.out.println("Hello! I am testing argument pass");
+            System.out.println(ie.getArg(0).toString()+" changed");
+            TreeSet<Integer> t = new TreeSet<>();
+            t.add(10);
+            out.put(ie.getArg(0),t);
+        }*/
+        else {
             // current implementation for function calls, context-insensitive, don't
             // consider arguments
             new InvokeExprHandler().run(ad, ie, new TreeSet<Integer>(), in, out);

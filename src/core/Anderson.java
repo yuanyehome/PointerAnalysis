@@ -26,8 +26,8 @@ public class Anderson extends ForwardFlowAnalysis {
     TreeSet<Integer> result = new TreeSet<>();
 
     RuntimeEnv args = new RuntimeEnv();
-    Map<String, Value> str2arg;
-    Map<Value, Value> arg2local = new HashMap<>();
+    Map<String, String> str2arg;
+    Map<String, String> arg2local = new HashMap<>();
     String curPrefix; // used for function calls, to distinguish different local vals
 
     Anderson(DirectedGraph graph, String _curPrefix) {
@@ -37,7 +37,7 @@ public class Anderson extends ForwardFlowAnalysis {
 
     void run(Map<String, TreeSet<Integer>> _pts,
              TreeMap<Integer, TreeSet<Integer>> _queries,
-             TreeSet<Integer> _result, RuntimeEnv _args, Map<String, Value> _str2arg) {
+             TreeSet<Integer> _result, RuntimeEnv _args, Map<String, String> _str2arg) {
         System.out.println(curPrefix + " Previous arguments:" + _args.toString());
 
         args.putAll(_args);

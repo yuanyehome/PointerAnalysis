@@ -41,14 +41,14 @@ public class DefinitionHandler extends StmtHandler {
             if (ad.str2arg.containsKey(Integer.toString(i))) {
                 rightVal.addAll(ad.args.get(ad.str2arg.get(Integer.toString(i))));
                 if (leftOp instanceof Local) {
-                    ad.arg2local.put(ad.str2arg.get(Integer.toString(i)), leftOp);
+                    ad.arg2local.put(ad.str2arg.get(Integer.toString(i)), leftOp.toString());
                 }
             }
         } else if (rightOp instanceof ThisRef) {
             if (ad.str2arg.containsKey("this")) {
                 rightVal.addAll(ad.args.get(ad.str2arg.get("this")));
                 if (leftOp instanceof Local) {
-                    ad.arg2local.put(ad.str2arg.get("this"), leftOp);
+                    ad.arg2local.put(ad.str2arg.get("this"), leftOp.toString());
                 }
             }
         } else {

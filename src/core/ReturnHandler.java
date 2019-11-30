@@ -20,20 +20,9 @@ public class ReturnHandler extends StmtHandler {
         System.out.println(ad.curPrefix + " in: " + in.toString());
 
         // TODO: Is this right? I've tried my best ...
-        for (Map.Entry<String, TreeSet<Integer>> e : ad.args.entrySetAll()) {
-            String upperName = e.getKey();
-            Value localValue = null;
-            for (Map.Entry<Value, Value> r : ad.arg2local.entrySet()) {
-                if (r.getKey().toString().equals(upperName)) {
-                    localValue = r.getValue();
-                    break;
-                }
-            }
-            if (localValue == null) {
-                Logger.getLogger("").severe("No local Value matched.");
-            } else {
-                TreeSet<Integer> localRes = in.get(localValue);
-                if (localRes != null) e.setValue(localRes);
+        for (Map.Entry<String, TreeSet<Integer>> e : ad.args.entrySet()) {
+            if(in.get(ad.arg2local.get(e.getKey())) != null) {
+                e.setValue(in.get(ad.arg2local.get(e.getKey())));
             }
         }
         /*
