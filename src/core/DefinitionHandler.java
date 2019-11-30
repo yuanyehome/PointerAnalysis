@@ -22,11 +22,12 @@ public class DefinitionHandler extends StmtHandler {
         DefinitionStmt st = (DefinitionStmt) u;
         Value rightOp = st.getRightOp();
         Value leftOp = st.getLeftOp();
+        boolean realEmpty = false;
 
         if (rightOp instanceof NewArrayExpr) {
             int id = getAndersonId(ad);
             rightVal.add(MemoryTable.allocMemory(id, rightOp));
-
+            // MemoryTable.addNullField(id, ArrayHelper.indexStr);
         } else if (rightOp instanceof AnyNewExpr) { // new array expr
             int id = getAndersonId(ad);
             rightVal.add(MemoryTable.allocMemory(id, rightOp));
@@ -39,7 +40,16 @@ public class DefinitionHandler extends StmtHandler {
             rightVal.addAll(handleRightField(in, rf));
         } else if (rightOp instanceof InvokeExpr) {
             new InvokeExprHandler().run(ad, (InvokeExpr) rightOp, rightVal, in, out);
-        } else if (rightOp instanceof ParameterRef) {
+        } /*else if (rightOp instanceof ArrayRef) {
+            ArrayRef ar = (ArrayRef) rightOp;
+            String fullName = ArrayHelper.getNameWithBase(ar);
+            if (!in.containsKey(fullName)) {
+                rightVal = new TreeSet<>();
+                realEmpty = true;
+            } else {
+                rightVal.addAll(in.get(fullName));
+            }
+        }*/ else if (rightOp instanceof ParameterRef) {
             int i = ((ParameterRef) rightOp).getIndex();
             if (ad.str2arg.containsKey(Integer.toString(i))) {
                 rightVal.addAll(ad.args.get(ad.str2arg.get(Integer.toString(i))));
@@ -54,11 +64,7 @@ public class DefinitionHandler extends StmtHandler {
                     ad.arg2local.put(ad.str2arg.get("this"), leftOp.toString());
                 }
             }
-        } else if (rightOp instanceof ArrayRef) {
-            ArrayRef ar = (ArrayRef) rightOp;
-
-        }
-        else {
+        } else {
             System.out.println("\033[33mDefinitionStmt: Not implemented - Right: \033[0m"
                     + rightOp.getClass().getName());
         }
