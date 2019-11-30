@@ -23,7 +23,8 @@ public class InvokeHandler extends StmtHandler {
             handleAlloc(ad, ie);
         } else if (methodStr.equals(testStr)) {
             handleTest(ad, ie, in);
-        } else if (ie.getMethod().isJavaLibraryMethod()) {
+        } else if (ie.getMethod().getDeclaringClass().isJavaLibraryClass()) {
+            System.out.println("FUCK");
             return;
         } else {
             // current implementation for function calls, context-insensitive, don't

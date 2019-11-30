@@ -21,6 +21,9 @@ class InvokeExprHandler {
     void run(Anderson ad, InvokeExpr ie, TreeSet<Integer> res,
              PointsToMap in, PointsToMap out) {
         SootMethod m = ie.getMethod();
+        if (m.getDeclaringClass().isJavaLibraryClass()) {
+            return;
+        }
         DirectedGraph graph = new ExceptionalUnitGraph(m.retrieveActiveBody());
         Anderson anderson = new Anderson(graph, ad.curPrefix + m.getName());
 
