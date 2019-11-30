@@ -8,6 +8,7 @@ public class SpecialInvokeTest {
   public static void specialchange(A k) {
     BenchmarkN.alloc(5);
     A d = new A();
+    specialchange(d);
   }
 
   public A func(A k) {
