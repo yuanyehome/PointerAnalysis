@@ -14,7 +14,7 @@ class MemoryTable {
     static Integer allocMemory(Integer id, Value v) {
         if (table.containsKey(id)) {
             Logger.getLogger("").warning("Alloc a repeated id: " + id.toString());
-            return 0;
+            return id;
         }
         if (id == 0) {
             id = (nextAutoAllocId--);

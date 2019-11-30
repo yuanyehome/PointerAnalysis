@@ -1,8 +1,8 @@
 package test;
 
 import benchmark.internal.BenchmarkN;
-import benchmark.objects.A;
-// import test.testObj.A;
+// import benchmark.objects.A;
+import test.testObj.A;
 
 public class ForLoopTest {
     public static void main(String[] args) {

@@ -46,7 +46,13 @@ public class InvokeHandler extends StmtHandler {
             ad.pts.put(valueToTest.toString(), new TreeSet<>());
         }
 
-        ad.pts.get(valueToTest).addAll(in.get(valueToTest));   // TODO: WHY???
-        ad.queries.put(testIndex, new TreeSet<Integer>(ad.pts.get(valueToTest.toString())));
+        TreeSet<Integer> ts = ad.pts.get(valueToTest);
+        ts.addAll(in.get(valueToTest));   // TODO: WHY???
+        TreeSet<Integer> tsWithZero = new TreeSet<>();
+        for (Integer i : ts) {
+            if (i >= 0) tsWithZero.add(i);
+            else tsWithZero.add(0);
+        }
+        ad.queries.put(testIndex, tsWithZero);
     }
 }

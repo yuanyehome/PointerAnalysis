@@ -1,5 +1,6 @@
 package core;
 
+import soot.ArrayType;
 import soot.Local;
 import soot.Unit;
 import soot.Value;
@@ -50,7 +51,10 @@ public class DefinitionHandler extends StmtHandler {
                     ad.arg2local.put(ad.str2arg.get("this"), leftOp.toString());
                 }
             }
-        } else {
+        } else if (rightOp instanceof ArrayRef) {
+
+        }
+        else {
             System.out.println("\033[33mDefinitionStmt: Not implemented - Right: \033[0m"
                     + rightOp.getClass().getName());
         }
