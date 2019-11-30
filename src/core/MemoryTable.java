@@ -1,5 +1,6 @@
 package core;
 
+import fj.data.Tree;
 import soot.Value;
 
 import java.util.HashMap;
@@ -55,5 +56,13 @@ class MemoryTable {
             s.append(e.getValue().toString()).append("\n");
         }
         return s.toString();
+    }
+
+    static public TreeSet<Integer> getGlobalMaxId() {
+        TreeSet<Integer> ts = new TreeSet<>();
+        for (Map.Entry<Integer, MemoryItem> e : table.entrySet()) {
+            ts.add(e.getKey());
+        }
+        return ts;
     }
 }

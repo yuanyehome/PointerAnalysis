@@ -20,12 +20,12 @@ public class DefinitionHandler extends StmtHandler {
         Value rightOp = st.getRightOp();
         Value leftOp = st.getLeftOp();
 
-        if (rightOp instanceof AnyNewExpr) {
-            int id = 0;
-            if (ad.isChecked) {
-                id = ad.allocId;
-                ad.isChecked = false;
-            }
+        if (rightOp instanceof NewArrayExpr) {
+            NewArrayExpr nae = (NewArrayExpr) rightOp;
+            int id = getAndersonId(ad);
+
+        } else if (rightOp instanceof AnyNewExpr) { // without NewArray
+            int id = getAndersonId(ad);
             rightVal.add(MemoryTable.allocMemory(id, rightOp));
         } else if (rightOp instanceof Local) {
             rightVal.addAll(in.get(rightOp.toString()));
@@ -72,11 +72,13 @@ public class DefinitionHandler extends StmtHandler {
         }
     }
 
-    private void handleLeftField(PointsToMap out, InstanceFieldRef rf) {
-        String baseStr = FieldHelper.getBaseStr(rf);
-        String fieldName = FieldHelper.getFieldName(rf);
-        TreeSet<Integer> ts = out.get(baseStr);
-        MemoryTable.update(ts, fieldName, rightVal);
+    private int getAndersonId(Anderson ad) {
+        int id = 0;
+        if (ad.isChecked) {
+            id = ad.allocId;
+            ad.isChecked = false;
+        }
+        return id;
     }
 
     private TreeSet<Integer> handleRightField(PointsToMap in, InstanceFieldRef rf) {
@@ -84,5 +86,12 @@ public class DefinitionHandler extends StmtHandler {
         String fieldName = FieldHelper.getFieldName(rf);
         TreeSet<Integer> ts = in.get(baseStr);
         return MemoryTable.getPointsToSet(ts, fieldName);
+    }
+
+    private void handleLeftField(PointsToMap out, InstanceFieldRef rf) {
+        String baseStr = FieldHelper.getBaseStr(rf);
+        String fieldName = FieldHelper.getFieldName(rf);
+        TreeSet<Integer> ts = out.get(baseStr);
+        MemoryTable.update(ts, fieldName, rightVal);
     }
 }
