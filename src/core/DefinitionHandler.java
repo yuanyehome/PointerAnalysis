@@ -1,5 +1,7 @@
 package core;
 
+import fj.data.Array;
+import polyglot.ast.New;
 import soot.ArrayType;
 import soot.Local;
 import soot.Unit;
@@ -21,10 +23,10 @@ public class DefinitionHandler extends StmtHandler {
         Value leftOp = st.getLeftOp();
 
         if (rightOp instanceof NewArrayExpr) {
-            NewArrayExpr nae = (NewArrayExpr) rightOp;
             int id = getAndersonId(ad);
+            rightVal.add(MemoryTable.allocMemory(id, rightOp));
 
-        } else if (rightOp instanceof AnyNewExpr) { // without NewArray
+        } else if (rightOp instanceof AnyNewExpr) { // new array expr
             int id = getAndersonId(ad);
             rightVal.add(MemoryTable.allocMemory(id, rightOp));
         } else if (rightOp instanceof Local) {
@@ -52,6 +54,7 @@ public class DefinitionHandler extends StmtHandler {
                 }
             }
         } else if (rightOp instanceof ArrayRef) {
+            ArrayRef ar = (ArrayRef) rightOp;
 
         }
         else {
