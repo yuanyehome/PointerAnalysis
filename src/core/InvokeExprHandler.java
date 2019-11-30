@@ -25,8 +25,13 @@ public class InvokeExprHandler {
         // ignore Library
         if (m.getDeclaringClass().isJavaLibraryClass())
             return;
+        if (ad.funcStack.contains(m.toString())) {
+            System.out.println("Recursion detected!");
+            return;
+        }
         DirectedGraph graph = new ExceptionalUnitGraph(m.retrieveActiveBody());
         Anderson anderson = new Anderson(graph, ad.curPrefix + m.getName());
+        anderson.funcStack.add(m.toString());
 
         RuntimeEnv sonArgs = new RuntimeEnv();
         Map<String, String> str2arg = new HashMap<>();

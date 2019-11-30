@@ -10,14 +10,12 @@ import soot.jimple.ReturnVoidStmt;
 import soot.toolkits.graph.DirectedGraph;
 import soot.toolkits.scalar.ForwardFlowAnalysis;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Anderson extends ForwardFlowAnalysis {
     public int allocId = 0;
     public boolean isChecked = false;
+    public static Set<String> funcStack = new HashSet<>();
 
     Map<String, TreeSet<Integer>> pts =
             new HashMap<>(); // points-to set, each local a state
@@ -39,7 +37,6 @@ public class Anderson extends ForwardFlowAnalysis {
              TreeMap<Integer, TreeSet<Integer>> _queries,
              TreeSet<Integer> _result, RuntimeEnv _args, Map<String, String> _str2arg) {
         System.out.println(curPrefix + " Previous arguments:" + _args.toString());
-
         args.putAll(_args);
         str2arg = _str2arg;
         doAnalysis(); // analysis main body (implemented in FlowAnalysis)
