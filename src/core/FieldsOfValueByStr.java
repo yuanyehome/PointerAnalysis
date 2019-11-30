@@ -31,7 +31,7 @@ public class FieldsOfValueByStr extends HashMap<String, TreeSet<Integer>> {
         } else {
             Value v = (Value) obj;
             if (v instanceof InstanceFieldRef) {
-                List<String> bases = getBases(v);
+                List<String> bases = BasesGetter.getBasesListStr(v);
                 return get(v, bases, 0);
             } else {
                 return super.get(v.toString());
@@ -44,7 +44,7 @@ public class FieldsOfValueByStr extends HashMap<String, TreeSet<Integer>> {
 
         TreeSet<Integer> res = new TreeSet<>();
         if (v instanceof InstanceFieldRef) {
-            List<String> bases = getBases(v);
+            List<String> bases = BasesGetter.getBasesListStr(v);
             res = put(v, ts, bases, 0);
         } else {
             res = super.put(v.toString(), ts);
@@ -70,7 +70,7 @@ public class FieldsOfValueByStr extends HashMap<String, TreeSet<Integer>> {
         }
     }
 
-    public Set<Entry<String, TreeSet<Integer>>> entrySetAll() {
+    Set<Entry<String, TreeSet<Integer>>> entrySetAll() {
         Set<Entry<String, TreeSet<Integer>>> es = super.entrySet();
         if (!fields.isEmpty()) {
             for (Map.Entry<String, FieldsOfValueByStr> e : fields.entrySet()) {
@@ -150,15 +150,5 @@ public class FieldsOfValueByStr extends HashMap<String, TreeSet<Integer>> {
             }
             return fields.get(base).put(v, ts, bases, depth + 1);
         }
-    }
-
-    private List<String> getBases(Value v) {
-        List<String> bases = new ArrayList<>();
-        while (v instanceof InstanceFieldRef) {
-            bases.add(0, v.toString());
-            v = ((InstanceFieldRef) v).getBase();
-        }
-        bases.add(0, v.toString());
-        return bases;
     }
 }
