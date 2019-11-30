@@ -7,3 +7,5 @@ result.txt
 code/sootOutput/*
 code/test/*.class
 code/gzc_compile.sh
+bin/
+classes/
