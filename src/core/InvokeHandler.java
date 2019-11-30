@@ -13,7 +13,7 @@ import java.util.TreeSet;
  */
 public class InvokeHandler extends StmtHandler {
     @Override
-    public void handle(Anderson ad, RuntimeEnv in, Unit u, RuntimeEnv out) {
+    public void handle(Anderson ad, PointsToMap in, Unit u, PointsToMap out) {
         InvokeExpr ie = ((InvokeStmt) u).getInvokeExpr();
         String methodStr = ie.getMethod().toString();
         String allocStr = "<benchmark.internal.BenchmarkN: void alloc(int)>";
@@ -23,14 +23,9 @@ public class InvokeHandler extends StmtHandler {
             handleAlloc(ad, ie);
         } else if (methodStr.equals(testStr)) {
             handleTest(ad, ie, in);
-        } /*else if (methodStr.equals("<test.SpecialInvokeTest: void specialchange(benchmark.objects.A)>")) {
-            System.out.println("Hello! I am testing argument pass");
-            System.out.println(ie.getArg(0).toString()+" changed");
-            TreeSet<Integer> t = new TreeSet<>();
-            t.add(10);
-            out.put(ie.getArg(0),t);
-        }*/
-        else {
+        } else if (ie.getMethod().isJavaLibraryMethod()) {
+            return;
+        } else {
             // current implementation for function calls, context-insensitive, don't
             // consider arguments
             new InvokeExprHandler().run(ad, ie, new TreeSet<Integer>(), in, out);
@@ -43,15 +38,15 @@ public class InvokeHandler extends StmtHandler {
         ad.isChecked = true;
     }
 
-    private void handleTest(Anderson ad, InvokeExpr ie, RuntimeEnv in) {
-        Value v = ie.getArgs().get(1);
-        int id = ((IntConstant) ie.getArgs().get(0)).value;
+    private void handleTest(Anderson ad, InvokeExpr ie, PointsToMap in) {
+        Value valueToTest = ie.getArgs().get(1);
+        int testIndex = ((IntConstant) ie.getArgs().get(0)).value;
 
-        if (!ad.pts.containsKey(v.toString())) {
-            ad.pts.put(v.toString(), new TreeSet<>());
+        if (!ad.pts.containsKey(valueToTest.toString())) {
+            ad.pts.put(valueToTest.toString(), new TreeSet<>());
         }
-        ad.pts.get(v.toString()).addAll(in.get(v.toString()));
 
-        ad.queries.put(id, new TreeSet<Integer>(ad.pts.get(v.toString())));
+        ad.pts.get(valueToTest).addAll(in.get(valueToTest));   // TODO: WHY???
+        ad.queries.put(testIndex, new TreeSet<Integer>(ad.pts.get(valueToTest.toString())));
     }
 }

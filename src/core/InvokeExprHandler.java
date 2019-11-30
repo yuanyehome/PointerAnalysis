@@ -1,6 +1,5 @@
 package core;
 
-import fj.Hash;
 import soot.Local;
 import soot.SootMethod;
 import soot.Value;
@@ -17,27 +16,27 @@ import java.util.TreeSet;
 /**
  * @author yangchenyang
  */
-public class InvokeExprHandler {
+class InvokeExprHandler {
 
-    public void run(Anderson ad, InvokeExpr ie, TreeSet<Integer> res,
-                    RuntimeEnv in, RuntimeEnv out) {
+    void run(Anderson ad, InvokeExpr ie, TreeSet<Integer> res,
+             PointsToMap in, PointsToMap out) {
         SootMethod m = ie.getMethod();
         DirectedGraph graph = new ExceptionalUnitGraph(m.retrieveActiveBody());
         Anderson anderson = new Anderson(graph, ad.curPrefix + m.getName());
 
-        RuntimeEnv sonArgs = new RuntimeEnv();
+        PointsToMap sonArgs = new PointsToMap();
         Map<String, String> str2arg = new HashMap<>();
 
         if (ie instanceof InstanceInvokeExpr) {
             Value base = ((InstanceInvokeExpr) ie).getBase();
-            sonArgs.put(base, in.get(base));
+            sonArgs.put(base.toString(), in.get(base));
             str2arg.put("this", base.toString());
         }
         List<Value> args = ie.getArgs();
         for (int i = 0; i < args.size(); i++) {
             Value arg = args.get(i);
             if (arg instanceof Local) {
-                sonArgs.put(arg, in.get(arg));
+                sonArgs.put(arg.toString(), in.get(arg));
                 str2arg.put(Integer.toString(i), arg.toString());
             }
         }

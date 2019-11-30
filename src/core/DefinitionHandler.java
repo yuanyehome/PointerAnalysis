@@ -6,7 +6,6 @@ import soot.Value;
 import soot.jimple.*;
 
 import java.util.TreeSet;
-import java.util.logging.Logger;
 
 /**
  * @author all
@@ -15,27 +14,27 @@ public class DefinitionHandler extends StmtHandler {
     private TreeSet<Integer> rightVal = new TreeSet<>();
 
     @Override
-    public void handle(Anderson ad, RuntimeEnv in, Unit u, RuntimeEnv out) {
-        DefinitionStmt du = (DefinitionStmt) u;
-        Value rightOp = du.getRightOp();
-        Value leftOp = du.getLeftOp();
+    public void handle(Anderson ad, PointsToMap in, Unit u, PointsToMap out) {
+        DefinitionStmt st = (DefinitionStmt) u;
+        Value rightOp = st.getRightOp();
+        Value leftOp = st.getLeftOp();
 
         if (rightOp instanceof AnyNewExpr) {
-            Logger.getLogger("").warning("Here is a new expression" + rightOp.toString());
+            int id = 0;
             if (ad.isChecked) {
-                rightVal.add(ad.allocId);
+                id = ad.allocId;
                 ad.isChecked = false;
-            } else rightVal.add(0);
+            }
+            rightVal.add(MemoryTable.allocMemory(id, rightOp));
         } else if (rightOp instanceof Local) {
-            Local from = (Local) rightOp;
-            rightVal.addAll(in.get(from));
+            rightVal.addAll(in.get(rightOp.toString()));
         } else if (rightOp instanceof CastExpr) {
-            rightVal = handleCast(ad, in, du);
+            rightVal.addAll(in.get(rightOp.toString()));
+        } else if (rightOp instanceof InstanceFieldRef) {
+            InstanceFieldRef rf = (InstanceFieldRef) rightOp;
+            rightVal.addAll(handleRightField(in, rf));
         } else if (rightOp instanceof InvokeExpr) {
             new InvokeExprHandler().run(ad, (InvokeExpr) rightOp, rightVal, in, out);
-        } else if (rightOp instanceof InstanceFieldRef) {
-            InstanceFieldRef field = (InstanceFieldRef) rightOp;
-            rightVal.addAll(in.get(field));
         } else if (rightOp instanceof ParameterRef) {
             int i = ((ParameterRef) rightOp).getIndex();
             if (ad.str2arg.containsKey(Integer.toString(i))) {
@@ -59,22 +58,27 @@ public class DefinitionHandler extends StmtHandler {
         if (rightVal.size() == 0) return;
 
         if (leftOp instanceof Local) {
-            out.put(leftOp, rightVal);
+            out.put(leftOp.toString(), rightVal);
         } else if (leftOp instanceof InstanceFieldRef) {
-            handleLeftField(ad, out, du);
+            InstanceFieldRef rf = (InstanceFieldRef) leftOp;
+            handleLeftField(out, rf);
         } else {
             System.out.println("\033[32mDefinitionStmt: Not implemented - Left: \033[0m"
                     + leftOp.getClass().getName());
         }
-        // TODO: more type of left/right OP.
     }
 
-    private TreeSet<Integer> handleCast(Anderson ad, RuntimeEnv in, DefinitionStmt st) {
-        return new TreeSet<>(in.get((Local) st.getRightOp()));
+    private void handleLeftField(PointsToMap out, InstanceFieldRef rf) {
+        String baseStr = FieldHelper.getBaseStr(rf);
+        String fieldName = FieldHelper.getFieldName(rf);
+        TreeSet<Integer> ts = out.get(baseStr);
+        MemoryTable.update(ts, fieldName, rightVal);
     }
 
-    private void handleLeftField(Anderson ad, RuntimeEnv out, DefinitionStmt st) {
-        InstanceFieldRef leftField = (InstanceFieldRef) st.getLeftOp();
-        out.put(leftField, rightVal);
+    private TreeSet<Integer> handleRightField(PointsToMap in, InstanceFieldRef rf) {
+        String baseStr = FieldHelper.getBaseStr(rf);
+        String fieldName = FieldHelper.getFieldName(rf);
+        TreeSet<Integer> ts = in.get(baseStr);
+        return MemoryTable.getPointsToSet(ts, fieldName);
     }
 }

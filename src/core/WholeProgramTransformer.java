@@ -28,9 +28,9 @@ public class WholeProgramTransformer extends SceneTransformer {
 
         Anderson anderson = new Anderson(graph, m.getName());
 
-        Map<String, TreeSet<Integer>> pts = new HashMap<>(); // points-to set, each local a state
+        PointsToMap pts = new PointsToMap(); // points-to set, each local a state
         TreeMap<Integer, TreeSet<Integer>> queries = new TreeMap<>();
-        anderson.run(pts, queries, new TreeSet<>(), new RuntimeEnv(), new HashMap<>()); // run analysis
+        anderson.run(pts, queries, new TreeSet<>(), new PointsToMap(), new HashMap<>()); // run analysis
 
         StringBuilder answer = new StringBuilder();
         for (Entry<Integer, TreeSet<Integer>> q : queries.entrySet()) {

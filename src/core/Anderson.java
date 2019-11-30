@@ -2,7 +2,6 @@ package core;
 
 import soot.Local;
 import soot.Unit;
-import soot.Value;
 import soot.jimple.DefinitionStmt;
 import soot.jimple.InvokeStmt;
 import soot.jimple.ReturnStmt;
@@ -16,16 +15,16 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class Anderson extends ForwardFlowAnalysis {
-    public int allocId = 0;
-    public boolean isChecked = false;
+    // used to set index after `BenchmarkN.alloc(x)`
+    int allocId = 0;
+    boolean isChecked = false;
 
-    Map<String, TreeSet<Integer>> pts =
-            new HashMap<>(); // points-to set, each local a state
+    PointsToMap args = new PointsToMap();
+    PointsToMap pts = new PointsToMap(); // points-to set, each local a state
     TreeMap<Integer, TreeSet<Integer>> queries =
             new TreeMap<>(); // record query info
     TreeSet<Integer> result = new TreeSet<>();
 
-    RuntimeEnv args = new RuntimeEnv();
     Map<String, String> str2arg;
     Map<String, String> arg2local = new HashMap<>();
     String curPrefix; // used for function calls, to distinguish different local vals
@@ -35,9 +34,8 @@ public class Anderson extends ForwardFlowAnalysis {
         curPrefix = _curPrefix + '/';
     }
 
-    void run(Map<String, TreeSet<Integer>> _pts,
-             TreeMap<Integer, TreeSet<Integer>> _queries,
-             TreeSet<Integer> _result, RuntimeEnv _args, Map<String, String> _str2arg) {
+    void run(PointsToMap _pts, TreeMap<Integer, TreeSet<Integer>> _queries,
+             TreeSet<Integer> _result, PointsToMap _args, Map<String, String> _str2arg) {
         System.out.println(curPrefix + " Previous arguments:" + _args.toString());
 
         args.putAll(_args);
@@ -50,8 +48,9 @@ public class Anderson extends ForwardFlowAnalysis {
         System.out.println(curPrefix + " After arguments:" + _args.toString());
     }
 
+    @Override
     protected Object newInitialFlow() {
-        return new RuntimeEnv();
+        return new PointsToMap();
     }
 
     /*
@@ -64,18 +63,20 @@ public class Anderson extends ForwardFlowAnalysis {
     }
     */
 
-    // deep copy for HashMap
+    @Override
     protected void copy(Object _src, Object _dest) {
-        RuntimeEnv src = (RuntimeEnv) _src;
-        RuntimeEnv dest = (RuntimeEnv) _dest;
+        assert (_src instanceof PointsToMap) : "Error type when copy";
+        PointsToMap src = (PointsToMap) _src;
+        PointsToMap dest = (PointsToMap) _dest;
         dest.copyFrom(src);
     }
 
+    @Override
     protected void merge(Object _in1, Object _in2, Object _out) {
-        RuntimeEnv in1, in2, out;
-        in1 = (RuntimeEnv) _in1;
-        in2 = (RuntimeEnv) _in2;
-        out = (RuntimeEnv) _out;
+        assert (_in1 instanceof PointsToMap) : "Error type when merge";
+        PointsToMap in1 = (PointsToMap) _in1;
+        PointsToMap in2 = (PointsToMap) _in2;
+        PointsToMap out = (PointsToMap) _out;
         out.copyFrom(in1);
         out.mergeFrom(in2);
     }
@@ -95,27 +96,24 @@ public class Anderson extends ForwardFlowAnalysis {
      */
     @Override
     protected void flowThrough(Object _in, Object _data, Object _out) {
-        RuntimeEnv in = (RuntimeEnv) _in;
-        RuntimeEnv out = (RuntimeEnv) _out;
+        assert (_in instanceof PointsToMap) : "Error type when flowThrough";
+        PointsToMap in = (PointsToMap) _in;
+        PointsToMap out = (PointsToMap) _out;
         Unit u = (Unit) _data;
-
-        copy(in, out);
+        out.copyFrom(in);
 
         // begin processing
         System.out.println("\033[35mHandle: \033[m" + u.toString());
+        if (u instanceof DefinitionStmt) {
+            new DefinitionHandler().handle(this, in, u, out);
+        }
         if (u instanceof InvokeStmt) {
           new InvokeHandler().handle(this, in, u, out);
-        } else if (u instanceof DefinitionStmt) {
-          new DefinitionHandler().handle(this, in, u, out);
         } else if (u instanceof ReturnStmt || u instanceof ReturnVoidStmt) {
           new ReturnHandler().handle(this, in, u, out);
         } else {
             System.out.println("\033[32mStmt not implemented: \033[0m" +
                     u.getClass().getName());
         }
-    }
-
-    TreeSet<Integer> getPointsToSet(Local local) {
-        return pts.get(local);
     }
 }
