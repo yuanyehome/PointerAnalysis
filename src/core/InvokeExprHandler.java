@@ -22,6 +22,7 @@ class InvokeExprHandler {
              PointsToMap in, PointsToMap out) {
         SootMethod m = ie.getMethod();
         if (m.getDeclaringClass().isJavaLibraryClass()) {
+            res.addAll(MemoryTable.getGlobalMaxId());
             return;
         }
         DirectedGraph graph = new ExceptionalUnitGraph(m.retrieveActiveBody());

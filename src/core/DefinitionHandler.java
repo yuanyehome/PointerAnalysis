@@ -7,6 +7,7 @@ import soot.Value;
 import soot.jimple.*;
 
 import java.util.TreeSet;
+import java.util.logging.Logger;
 
 /**
  * @author all
@@ -59,7 +60,10 @@ public class DefinitionHandler extends StmtHandler {
                     + rightOp.getClass().getName());
         }
 
-        if (rightVal.size() == 0) return;
+        if (rightVal.size() == 0) {
+            Logger.getLogger("").warning("Empty right val");
+            rightVal = MemoryTable.getGlobalMaxId();
+        }
 
         if (leftOp instanceof Local) {
             out.put(leftOp.toString(), rightVal);
