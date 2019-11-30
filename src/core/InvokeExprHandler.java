@@ -22,6 +22,9 @@ public class InvokeExprHandler {
     public void run(Anderson ad, InvokeExpr ie, TreeSet<Integer> res,
                     RuntimeEnv in, RuntimeEnv out) {
         SootMethod m = ie.getMethod();
+        // ignore Library
+        if (m.getDeclaringClass().isJavaLibraryClass())
+            return;
         DirectedGraph graph = new ExceptionalUnitGraph(m.retrieveActiveBody());
         Anderson anderson = new Anderson(graph, ad.curPrefix + m.getName());
 
