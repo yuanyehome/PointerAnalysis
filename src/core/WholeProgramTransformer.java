@@ -27,7 +27,7 @@ public class WholeProgramTransformer extends SceneTransformer {
         System.out.println("\033[33mGraph: \033[0m\n" + graph.toString());
 
         Anderson anderson = new Anderson(graph, m.getName());
-        anderson.funcStack.add(m.toString());
+        Anderson.funcStack.add(m.toString());
 
         Map<String, TreeSet<Integer>> pts = new HashMap<>(); // points-to set, each local a state
         TreeMap<Integer, TreeSet<Integer>> queries = new TreeMap<>();
