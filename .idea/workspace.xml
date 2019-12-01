@@ -1,24 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="PointerAnalysis:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="dbeba1af-01a6-4f00-bdef-bc585b15be71" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/PointerAnalysis_jar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/benchmark/internal/Benchmark.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/benchmark/internal/BenchmarkN.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/benchmark/objects/A.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/benchmark/objects/B.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/benchmark/objects/G.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/benchmark/objects/H.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/benchmark/objects/I.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/benchmark/objects/N.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/benchmark/objects/P.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/benchmark/objects/Q.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/benchmark/objects/Z.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/benchmark/objects/test.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/NoPointerAnalysis/.classpath" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/NoPointerAnalysis/.project" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/NoPointerAnalysis/jce.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/NoPointerAnalysis/rt.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NoPointerAnalysis.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PointerAnalysisByTH.iml" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -31,9 +24,16 @@
   </component>
   <component name="ProjectId" id="1UOc79zlQazkHUQkpxOZgCqHzop" />
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\22527\workplace\PointerAnalysis" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
