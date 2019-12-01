@@ -8,11 +8,12 @@ public class mytest1700012821 {
 
     static A a;
 
+
     static class X {
         public A a = new A();
     }
 
-    static class CastTest {
+    class CastTest {
         public class MyA {}
         public class MyB extends CastTest.MyA {}
 
@@ -32,11 +33,11 @@ public class mytest1700012821 {
 
             a = b;
             b2 = (test.CastTest.MyB) a;
-            BenchmarkN.test(100, b2);
+            BenchmarkN.test(100, b2); // 500
             int x = 3;
             if (x > 1)
                 b = b2;
-            BenchmarkN.test(200, b);
+            BenchmarkN.test(200, b); // 500
         }
     }
 
@@ -74,11 +75,12 @@ public class mytest1700012821 {
     }
 
     static void TestCast() {
-        CastTest test = new CastTest();
+        mytest1700012821 s = new mytest1700012821();
+        CastTest test = s.new CastTest();
         test.CastTest_();
     }
 
-    public static void main() {
+    public static void main(String[] args) {
         // test system call;
         Integer x = 3;
         System.out.println(x);
@@ -125,6 +127,8 @@ public class mytest1700012821 {
         TestCast();
 
         TestMultiField();
+
+
 
     }
 }
