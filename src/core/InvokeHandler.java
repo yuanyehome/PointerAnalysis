@@ -36,7 +36,7 @@ public class InvokeHandler extends StmtHandler {
     private void handleAlloc(Anderson ad, InvokeExpr ie) {
         ad.allocId = ((IntConstant) ie.getArgs().get(0)).value;
         ad.isChecked = true;
-        ad.funcStack.get(ad.curMethod).add(ad.allocId);
+        Anderson.funcStack.get(ad.curMethod).add(ad.allocId);
     }
 
     private void handleTest(Anderson ad, InvokeExpr ie, PointsToMap in) {
@@ -49,6 +49,6 @@ public class InvokeHandler extends StmtHandler {
             if (i >= 0) tsWithZero.add(i);
             else tsWithZero.add(0);
         }
-        ad.queries.put(testIndex, tsWithZero);
+        Anderson.queries.put(testIndex, tsWithZero);
     }
 }
