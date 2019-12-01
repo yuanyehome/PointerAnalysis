@@ -44,6 +44,15 @@ class MemoryTable {
         System.out.println("\033[32mAfter Update: \033[m\n" + getString());
     }
 
+    static void updateArray(TreeSet<Integer> setToUpdate, TreeSet<Integer> newPointsToSet) {
+        System.out.println("\033[32mUpdate Array: \033[m" + setToUpdate.toString() + "\n"
+                + getString());
+        for (Integer id : setToUpdate) {
+                table.get(id).put(ArrayHelper.indexStr, newPointsToSet);
+            }
+        System.out.println("\033[32mAfter Update: \033[m\n" + getString());
+    }
+
     static TreeSet<Integer> getPointsToSet(TreeSet<Integer> setToGet, String fieldName) {
         System.out.println("\033[32mGet: \033[m" + setToGet.toString() + " field - " + fieldName + " from\n"
                 + getString());

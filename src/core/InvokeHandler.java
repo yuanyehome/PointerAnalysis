@@ -49,6 +49,6 @@ public class InvokeHandler extends StmtHandler {
             if (i >= 0) tsWithZero.add(i);
             else tsWithZero.add(0);
         }
-        ad.queries.put(testIndex, tsWithZero);
+        Anderson.queries.put(testIndex, tsWithZero);
     }
 }
