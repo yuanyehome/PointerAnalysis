@@ -107,6 +107,6 @@ public class DefinitionHandler extends StmtHandler {
 
     private void handleLeftArray(PointsToMap out, ArrayRef ar) {
         TreeSet<Integer> ts = out.get(ar.getBase().toString());
-        MemoryTable.update(ts, ArrayHelper.indexStr, rightVal);
+        MemoryTable.updateArray(ts, rightVal);
     }
 }
