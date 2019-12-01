@@ -8,3 +8,6 @@ code/gzc_compile.sh
 classes/*
 out/*
 src/META-INF/*
+*.jar
+.idea/
+.classpath

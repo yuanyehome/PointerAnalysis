@@ -1,9 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="PointerAnalysis:jar">
-    <output-path>$PROJECT_DIR$/bin/artifacts/PointerAnalysis_jar</output-path>
-    <root id="archive" name="PointerAnalysis.jar">
-      <element id="module-output" name="PointerAnalysis" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/sootclasses-trunk-jar-with-dependencies.jar" path-in-jar="/" />
-    </root>
-  </artifact>
-</component>

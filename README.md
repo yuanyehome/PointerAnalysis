@@ -1,4 +1,4 @@
-# 指针分析 
+# 指针分析大作业 
 
 软件分析技术课程作业，基于 [Soot 程序分析框架](sable.github.io/soot[
 ](https://cn.bing.com/search?q=soot&qs=n&form=QBLHCN&sp=-1&pq=soot&sc=8-4&sk=&cvid=D42429B894C04E4483BF5A0C033113D3#))。
@@ -25,6 +25,15 @@ public static void main(String[] args) {
 1: 1 2
 2: 3
 ```
+
+使用方法：
+
+-   请使用`JAVA8`进行编译和运行；
+-   `code/`目录下为测试代码，其中`mytest1700012821.java`应可通过；
+-   `src/`目录下为主代码，`core.MyPointerAnalysis`为程序运行起点；
+-   `cd code; ./compile_test.sh`对`test`代码进行编译；
+-   将生成的`jar`文件放在主目录下，执行`java -jar ***.jar code test.***`；
+-   详细内容参考[report](./report.pdf)
 
 贡献者：
 
@@ -59,6 +68,15 @@ Output：
 1: 1 2
 2: 3
 ```
+
+Usage:
+
+-   Please use `JAVA8` to compile and run;
+-   `code/` contains test code, and `mytest1700012821.java` is my final test;
+-   `src/` contains project source code, and program starts from `core.MyPointerAnalysis`;
+-   `cd code; ./compile_test.sh`  to compile test code;
+-   Build the `jar` file, and run `java -jar ***.jar code test.***`;
+-   For more details, please refer to [report](./report.pdf)
 
 Contributor:
 
