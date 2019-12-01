@@ -111,11 +111,11 @@ public class DefinitionHandler extends StmtHandler {
         String baseStr = FieldHelper.getBaseStr(rf);
         String fieldName = FieldHelper.getFieldName(rf);
         TreeSet<Integer> ts = out.get(baseStr);
-        MemoryTable.update(ts, fieldName, rightVal);
+        MemoryTable.update(ts, fieldName, rightVal);    // TODO: Or `set` ?
     }
 
     private void handleLeftArray(PointsToMap out, ArrayRef ar) {
         TreeSet<Integer> ts = out.get(ar.getBase().toString());
-        MemoryTable.updateArray(ts, rightVal);
+        MemoryTable.update(ts, ArrayHelper.indexStr, rightVal);
     }
 }
