@@ -9,19 +9,19 @@ import soot.jimple.ReturnVoidStmt;
 import soot.toolkits.graph.DirectedGraph;
 import soot.toolkits.scalar.ForwardFlowAnalysis;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Anderson extends ForwardFlowAnalysis {
     // used to set index after `BenchmarkN.alloc(x)`
     int allocId = 0;
     boolean isChecked = false;
 
+    static int magicNum = 65536;
     static TreeMap<Integer, TreeSet<Integer>> queries =
             new TreeMap<>(); // record query info
-    static Map<String, TreeSet<Integer>> funcStack = new HashMap<>();
+    //static Map<String, TreeSet<Integer>> funcStack = new HashMap<>();
+    static TreeSet<Integer> allocIDSet = new TreeSet<>();
+    static List<String> funcStack = new ArrayList<>();
     String curMethod;
 
     TreeSet<Integer> result;

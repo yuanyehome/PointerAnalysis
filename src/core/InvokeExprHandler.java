@@ -29,19 +29,21 @@ class InvokeExprHandler {
         System.out.println(ad.funcStack);
 
         // deal with recursion: merge all passing values
-        if (ad.funcStack.containsKey(m.toString())) {
-            System.out.println("Recursion: merging all possible heaps.");
-            TreeSet<Integer> t = ad.funcStack.get(m.toString());
+        if (ad.funcStack.contains(m.toString())) {
+            System.out.println("Recursion: set heaps correlated to magic number.");
+            TreeSet<Integer> heap = new TreeSet<>();
             for (Map.Entry<String, TreeSet<Integer>> e: out.entrySet()) {
-                e.getValue().addAll(t);
+                heap.addAll(e.getValue());
             }
+            //MemoryTable.update();
+            res.add(ad.magicNum);
             return;
         }
 
         DirectedGraph graph = new ExceptionalUnitGraph(m.retrieveActiveBody());
         Anderson anderson = new Anderson(graph, ad.curPrefix + m.getName());
         anderson.curMethod = m.toString();
-        anderson.funcStack.put(anderson.curMethod, new TreeSet<>());
+        anderson.funcStack.add(anderson.curMethod);
 
         PointsToMap sonArgs = new PointsToMap();
         Map<String, String> str2arg = new HashMap<>();

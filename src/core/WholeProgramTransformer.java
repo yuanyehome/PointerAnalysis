@@ -29,7 +29,7 @@ public class WholeProgramTransformer extends SceneTransformer {
         Anderson anderson = new Anderson(graph, m.getName());
         // record function call stack
         anderson.curMethod = m.toString();
-        anderson.funcStack.put(anderson.curMethod, new TreeSet<>());
+        anderson.funcStack.add(anderson.curMethod);
 
         anderson.run(new TreeSet<>(), new PointsToMap(), new HashMap<>()); // run analysis
 
@@ -39,8 +39,15 @@ public class WholeProgramTransformer extends SceneTransformer {
             answer.append(q.getKey().toString()).append(":");
             if (result == null)
                 continue;
-            for (Integer i : result) {
-                answer.append(" ").append(i);
+            if (result.contains(anderson.magicNum)) {
+                for (Integer i: anderson.allocIDSet) {
+                    answer.append(" ").append(i);
+                }
+            }
+            else {
+                for (Integer i : result) {
+                    answer.append(" ").append(i);
+                }
             }
             answer.append("\n");
         }
