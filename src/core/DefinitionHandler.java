@@ -1,6 +1,7 @@
 package core;
 
 import com.sun.org.apache.xpath.internal.operations.And;
+import polyglot.ast.NewArray;
 import soot.Local;
 import soot.Unit;
 import soot.Value;
@@ -22,18 +23,24 @@ public class DefinitionHandler extends StmtHandler {
         Value rightOp = st.getRightOp();
         Value leftOp = st.getLeftOp();
 
-        if (rightOp instanceof NewArrayExpr) {
-            int id = getAndersonId(ad);
-            rightVal.add(MemoryTable.allocMemory(id, rightOp));
-            MemoryTable.initialArrayIndex(id);  // add [id@<index>=null] to memory table
-        } else if (rightOp instanceof AnyNewExpr) { // without new array expr
-            int id = getAndersonId(ad);
-            rightVal.add(MemoryTable.allocMemory(id, rightOp));
+        if (rightOp instanceof AnyNewExpr) { // without new array expr
+            if (MemoryTable.repeatedNewExpr.get(u) != null) {
+                rightVal.add(MemoryTable.repeatedNewExpr.get(u));
+            } else {
+                int id = getAndersonId(ad, u);
+                id = MemoryTable.allocMemory(id, rightOp);
+                rightVal.add(id);
+                if (rightOp instanceof NewArrayExpr) {
+                    MemoryTable.initialArrayIndex(id);  // add [id@<index>=null] to memory table
+                }
+                MemoryTable.repeatedNewExpr.put(u, id);
+            }
         } else if (rightOp instanceof Local) {
             rightVal.addAll(in.get(rightOp.toString()));
         } else if (rightOp instanceof CastExpr) {
             rightVal.addAll(in.get(rightOp.toString()));
         } else if (rightOp instanceof InstanceFieldRef) {
+            realEmpty = true;   // * = a.f, which a -> null
             InstanceFieldRef rf = (InstanceFieldRef) rightOp;
             rightVal.addAll(handleRightField(in, rf));
         } else if (rightOp instanceof ArrayRef) {
@@ -85,7 +92,7 @@ public class DefinitionHandler extends StmtHandler {
         }
     }
 
-    private int getAndersonId(Anderson ad) {
+    private int getAndersonId(Anderson ad, Unit u) {
         int id = 0;
         if (ad.isChecked) {
             id = ad.allocId;
@@ -111,11 +118,11 @@ public class DefinitionHandler extends StmtHandler {
         String baseStr = FieldHelper.getBaseStr(rf);
         String fieldName = FieldHelper.getFieldName(rf);
         TreeSet<Integer> ts = out.get(baseStr);
-        MemoryTable.update(ts, fieldName, rightVal);
+        MemoryTable.update(ts, fieldName, rightVal);    // TODO: Or `set` ?
     }
 
     private void handleLeftArray(PointsToMap out, ArrayRef ar) {
         TreeSet<Integer> ts = out.get(ar.getBase().toString());
-        MemoryTable.updateArray(ts, rightVal);
+        MemoryTable.update(ts, ArrayHelper.indexStr, rightVal);
     }
 }
