@@ -21,12 +21,22 @@ class InvokeExprHandler {
     void run(Anderson ad, InvokeExpr ie, TreeSet<Integer> res,
              PointsToMap in, PointsToMap out) {
         SootMethod m = ie.getMethod();
-        if (m.getDeclaringClass().isJavaLibraryClass()) {
-            res.addAll(MemoryTable.getGlobalMaxId());
+
+        System.out.println("\033[33mTest: \033[0m"+m.toString());
+        // deal with recursion: merge all passing values
+        if (ad.funcStack.containsKey(m.toString())) {
+            System.out.println("Recursion: merging all possible heaps.");
+            TreeSet<Integer> t = ad.funcStack.get(m.toString());
+            for (Map.Entry<String, TreeSet<Integer>> e: out.entrySet()) {
+                e.getValue().addAll(t);
+            }
             return;
         }
+
         DirectedGraph graph = new ExceptionalUnitGraph(m.retrieveActiveBody());
         Anderson anderson = new Anderson(graph, ad.curPrefix + m.getName());
+        anderson.curMethod = m.toString();
+        anderson.funcStack.put(anderson.curMethod, new TreeSet<>());
 
         PointsToMap sonArgs = new PointsToMap();
         Map<String, String> str2arg = new HashMap<>();

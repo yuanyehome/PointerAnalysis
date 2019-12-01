@@ -24,7 +24,7 @@ public class InvokeHandler extends StmtHandler {
         } else if (methodStr.equals(testStr)) {
             handleTest(ad, ie, in);
         } else if (ie.getMethod().getDeclaringClass().isJavaLibraryClass()) {
-            System.out.println("FUCK");
+            System.out.println("System Calls: not handled.");
             return;
         } else {
             // current implementation for function calls, context-insensitive, don't
@@ -37,6 +37,7 @@ public class InvokeHandler extends StmtHandler {
     private void handleAlloc(Anderson ad, InvokeExpr ie) {
         ad.allocId = ((IntConstant) ie.getArgs().get(0)).value;
         ad.isChecked = true;
+        ad.funcStack.get(ad.curMethod).add(ad.allocId);
     }
 
     private void handleTest(Anderson ad, InvokeExpr ie, PointsToMap in) {

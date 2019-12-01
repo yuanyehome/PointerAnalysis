@@ -24,6 +24,8 @@ public class Anderson extends ForwardFlowAnalysis {
     TreeMap<Integer, TreeSet<Integer>> queries =
             new TreeMap<>(); // record query info
     TreeSet<Integer> result = new TreeSet<>();
+    Map<String, TreeSet<Integer>> funcStack = new HashMap<>();
+    String curMethod;
 
     Map<String, String> str2arg;
     Map<String, String> arg2local = new HashMap<>();
@@ -37,7 +39,6 @@ public class Anderson extends ForwardFlowAnalysis {
     void run(PointsToMap _pts, TreeMap<Integer, TreeSet<Integer>> _queries,
              TreeSet<Integer> _result, PointsToMap _args, Map<String, String> _str2arg) {
         System.out.println(curPrefix + " Previous arguments:" + _args.toString());
-
         args.putAll(_args);
         str2arg = _str2arg;
         doAnalysis(); // analysis main body (implemented in FlowAnalysis)
@@ -45,6 +46,7 @@ public class Anderson extends ForwardFlowAnalysis {
         _queries.putAll(queries);
         _result.addAll(result);
         _args.putAll(args);
+        funcStack.remove(curMethod);
         System.out.println(curPrefix + " After arguments:" + _args.toString());
     }
 
