@@ -67,7 +67,8 @@ public class DefinitionHandler extends StmtHandler {
 
         if (rightVal.size() == 0) {
             Logger.getLogger("").warning("Empty right val");
-            rightVal = MemoryTable.getGlobalMaxId();
+            //rightVal = MemoryTable.getGlobalMaxId();
+            // TODO why return all???
         }
 
         if (leftOp instanceof Local) {

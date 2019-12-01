@@ -20,9 +20,14 @@ class InvokeExprHandler {
 
     void run(Anderson ad, InvokeExpr ie, TreeSet<Integer> res,
              PointsToMap in, PointsToMap out) {
-        SootMethod m = ie.getMethod();
+        if (ie.getMethod().getDeclaringClass().isJavaLibraryClass()) {
+            System.out.println("System Calls: not handled.");
+            return;
+        }
 
+        SootMethod m = ie.getMethod();
         System.out.println(ad.funcStack);
+
         // deal with recursion: merge all passing values
         if (ad.funcStack.containsKey(m.toString())) {
             System.out.println("Recursion: merging all possible heaps.");
