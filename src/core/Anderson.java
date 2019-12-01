@@ -19,15 +19,14 @@ public class Anderson extends ForwardFlowAnalysis {
     int allocId = 0;
     boolean isChecked = false;
 
-    PointsToMap args = new PointsToMap();
     static TreeMap<Integer, TreeSet<Integer>> queries =
             new TreeMap<>(); // record query info
-    TreeSet<Integer> result = new TreeSet<>();
     static Map<String, TreeSet<Integer>> funcStack = new HashMap<>();
     String curMethod;
 
+    TreeSet<Integer> result;
+    PointsToMap args;
     Map<String, String> str2arg;
-    Map<String, String> arg2local = new HashMap<>();
     String curPrefix; // used for function calls, to distinguish different local vals
 
     Anderson(DirectedGraph graph, String _curPrefix) {
@@ -36,14 +35,11 @@ public class Anderson extends ForwardFlowAnalysis {
     }
 
     void run(TreeSet<Integer> _result, PointsToMap _args, Map<String, String> _str2arg) {
-        System.out.println(curPrefix + " Previous arguments:" + _args.toString());
-        args.putAll(_args);
+        result = _result;
+        args = _args;
         str2arg = _str2arg;
         doAnalysis(); // analysis main body (implemented in FlowAnalysis)
-        _result.addAll(result);
-        _args.putAll(args);
         funcStack.remove(curMethod);
-        System.out.println(curPrefix + " After arguments:" + _args.toString());
     }
 
     @Override
@@ -51,15 +47,6 @@ public class Anderson extends ForwardFlowAnalysis {
         return new PointsToMap();
     }
 
-    /*
-    @Override
-    protected Object entryInitialFlow() {
-        Logger.getLogger("").warning("Fuck it!");
-        Map<String, Set<String>> ret = new HashMap<String, Set<String>>();
-        copy(args, ret);
-        return ret;
-    }
-    */
 
     @Override
     protected void copy(Object _src, Object _dest) {
@@ -77,12 +64,6 @@ public class Anderson extends ForwardFlowAnalysis {
         PointsToMap out = (PointsToMap) _out;
         out.copyFrom(in1);
         out.mergeFrom(in2);
-    }
-
-    private void prefixCheck(Local l) {
-        if (l.getName().contains(curPrefix))
-            return;
-        l.setName(curPrefix + l.getName());
     }
 
     // transform function

@@ -53,17 +53,13 @@ public class DefinitionHandler extends StmtHandler {
             int i = ((ParameterRef) rightOp).getIndex();
             if (ad.str2arg.containsKey(Integer.toString(i))) {
                 rightVal.addAll(ad.args.get(ad.str2arg.get(Integer.toString(i))));
-                if (leftOp instanceof Local) {
-                    ad.arg2local.put(ad.str2arg.get(Integer.toString(i)), leftOp.toString());
-                }
             }
         } else if (rightOp instanceof ThisRef) {
             if (ad.str2arg.containsKey("this")) {
                 rightVal.addAll(ad.args.get(ad.str2arg.get("this")));
-                if (leftOp instanceof Local) {
-                    ad.arg2local.put(ad.str2arg.get("this"), leftOp.toString());
-                }
             }
+        } else if (rightOp instanceof NullConstant) {
+            // TODO handle NULL
         } else {
             System.out.println("\033[33mDefinitionStmt: Not implemented - Right: \033[0m"
                     + rightOp.getClass().getName());
@@ -79,6 +75,8 @@ public class DefinitionHandler extends StmtHandler {
         } else if (leftOp instanceof InstanceFieldRef) {
             InstanceFieldRef rf = (InstanceFieldRef) leftOp;
             handleLeftField(out, rf);
+        } else if (leftOp instanceof ArrayRef) {
+            // TODO handle array left
         } else {
             System.out.println("\033[32mDefinitionStmt: Not implemented - Left: \033[0m"
                     + leftOp.getClass().getName());
