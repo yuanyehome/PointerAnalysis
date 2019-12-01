@@ -31,15 +31,26 @@ class MemoryTable {
         table.get(baseId).set(ArrayHelper.indexStr, new TreeSet<>());
     }
 
+    static void initialArrayIndex(Integer baseId, int dim, Value v) {
+        Integer id = baseId;
+        Integer nextId = 0;
+        for (int i = 0; i < dim; ++i) {
+            nextId = allocMemory(0, v);    // v is wrong here
+            TreeSet<Integer> ts = new TreeSet<>();
+            ts.add(nextId);
+            table.get(id).set(ArrayHelper.indexStr, ts);
+            id = nextId;
+        }
+        System.out.println("\033[32mAfter new MULTI array: \033[m" + getString());
+    }
+
     static void update(TreeSet<Integer> setToUpdate, String fieldName, TreeSet<Integer> newPointsToSet) {
         System.out.println("\033[32mUpdate: \033[m" + setToUpdate.toString() + " field -" + fieldName
                 + "\n" + newPointsToSet.toString() + getString());
         for (Integer id : setToUpdate) {
             MemoryItem mi = table.get(id);
-            if (mi.get(fieldName) == null)
-                mi.put(fieldName, newPointsToSet);
-            else
-                mi.get(fieldName).addAll(newPointsToSet);
+            if (mi.get(fieldName) == null) mi.put(fieldName, newPointsToSet);
+            else mi.get(fieldName).addAll(newPointsToSet);
         }
         System.out.println("\033[32mAfter Update: \033[m\n" + getString());
     }

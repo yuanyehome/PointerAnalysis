@@ -30,6 +30,10 @@ public class DefinitionHandler extends StmtHandler {
                 rightVal.add(id);
                 if (rightOp instanceof NewArrayExpr) {
                     MemoryTable.initialArrayIndex(id);  // add [id@<index>=null] to memory table
+                } else if (rightOp instanceof NewMultiArrayExpr) {
+                    NewMultiArrayExpr mae = (NewMultiArrayExpr) rightOp;
+                    int dim = mae.getSizes().size();
+                    MemoryTable.initialArrayIndex(id, dim, rightOp);
                 }
                 MemoryTable.repeatedNewExpr.put(u, id);
             }
