@@ -1,6 +1,6 @@
 package core;
 
-import fj.data.Tree;
+import soot.Unit;
 import soot.Value;
 
 import java.util.HashMap;
@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 class MemoryTable {
     private static Integer nextAutoAllocId = -1; // 0 should never be alloc
     private static Map<Integer, MemoryItem> table = new HashMap<>();
+    static Map<Unit, Integer> repeatedNewExpr = new HashMap<>();
 
     static Integer allocMemory(Integer id, Value v) {
         if (table.containsKey(id)) {
@@ -31,8 +32,8 @@ class MemoryTable {
     }
 
     static void update(TreeSet<Integer> setToUpdate, String fieldName, TreeSet<Integer> newPointsToSet) {
-        System.out.println("\033[32mUpdate: \033[m" + setToUpdate.toString() + " field-" + fieldName + "\n"
-                + getString());
+        System.out.println("\033[32mUpdate: \033[m" + setToUpdate.toString() + " field -" + fieldName
+                + "\n" + newPointsToSet.toString() + getString());
         for (Integer id : setToUpdate) {
             MemoryItem mi = table.get(id);
             if (mi.get(fieldName) == null) mi.put(fieldName, newPointsToSet);
