@@ -1,5 +1,7 @@
 package core;
 
+import fj.data.Tree;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import soot.Unit;
 import soot.Value;
 import soot.jimple.IntConstant;
@@ -44,17 +46,21 @@ public class InvokeHandler extends StmtHandler {
         Value valueToTest = ie.getArgs().get(1);
         int testIndex = ((IntConstant) ie.getArgs().get(0)).value;
 
-        if (!ad.pts.containsKey(valueToTest.toString())) {
+       /* if (!ad.pts.containsKey(valueToTest.toString())) {
             ad.pts.put(valueToTest.toString(), new TreeSet<>());
         }
 
         TreeSet<Integer> ts = ad.pts.get(valueToTest);
-        ts.addAll(in.get(valueToTest));   // TODO: WHY???
+        ts.addAll(in.get(valueToTest));   // TODO: WHY???*/
+        TreeSet<Integer> ts = new TreeSet<>(in.get(valueToTest));
         TreeSet<Integer> tsWithZero = new TreeSet<>();
         for (Integer i : ts) {
             if (i >= 0) tsWithZero.add(i);
             else tsWithZero.add(0);
         }
+        System.out.println(valueToTest);
+        System.out.println(ts);
+        System.out.println(tsWithZero);
         ad.queries.put(testIndex, tsWithZero);
     }
 }

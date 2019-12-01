@@ -6,16 +6,23 @@ import benchmark.objects.B;
 
 public class RecursionTest {
 
+    public static void testme(B k){
+        BenchmarkN.alloc(7);
+        A d = new A(k);
+        specialchange(d);
+        BenchmarkN.test(8, d);
+    }
+
     public static void specialchange(A k) {
         BenchmarkN.alloc(4);
         A d = new A();
         BenchmarkN.alloc(5);
         A s = new A();
-        specialchange(k);
-        BenchmarkN.test(5, d); // 4 5
         BenchmarkN.alloc(6);
         B b = new B();
         k.f = b;
+        testme(b);
+        BenchmarkN.test(5, d); // 4 5
         BenchmarkN.test(6, s.f);
     }
 

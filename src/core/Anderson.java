@@ -20,11 +20,10 @@ public class Anderson extends ForwardFlowAnalysis {
     boolean isChecked = false;
 
     PointsToMap args = new PointsToMap();
-    PointsToMap pts = new PointsToMap(); // points-to set, each local a state
-    TreeMap<Integer, TreeSet<Integer>> queries =
+    static TreeMap<Integer, TreeSet<Integer>> queries =
             new TreeMap<>(); // record query info
     TreeSet<Integer> result = new TreeSet<>();
-    Map<String, TreeSet<Integer>> funcStack = new HashMap<>();
+    static Map<String, TreeSet<Integer>> funcStack = new HashMap<>();
     String curMethod;
 
     Map<String, String> str2arg;
@@ -36,14 +35,11 @@ public class Anderson extends ForwardFlowAnalysis {
         curPrefix = _curPrefix + '/';
     }
 
-    void run(PointsToMap _pts, TreeMap<Integer, TreeSet<Integer>> _queries,
-             TreeSet<Integer> _result, PointsToMap _args, Map<String, String> _str2arg) {
+    void run(TreeSet<Integer> _result, PointsToMap _args, Map<String, String> _str2arg) {
         System.out.println(curPrefix + " Previous arguments:" + _args.toString());
         args.putAll(_args);
         str2arg = _str2arg;
         doAnalysis(); // analysis main body (implemented in FlowAnalysis)
-        _pts.putAll(pts);
-        _queries.putAll(queries);
         _result.addAll(result);
         _args.putAll(args);
         funcStack.remove(curMethod);
@@ -106,6 +102,7 @@ public class Anderson extends ForwardFlowAnalysis {
 
         // begin processing
         System.out.println("\033[35mHandle: \033[m" + u.toString());
+        System.out.println("\033[35mCurrent pointsToMap: \033[m" +in);
         if (u instanceof DefinitionStmt) {
             new DefinitionHandler().handle(this, in, u, out);
         }

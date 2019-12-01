@@ -22,6 +22,7 @@ class InvokeExprHandler {
              PointsToMap in, PointsToMap out) {
         SootMethod m = ie.getMethod();
 
+        System.out.println(ad.funcStack);
         System.out.println("\033[33mTest: \033[0m"+m.toString());
         // deal with recursion: merge all passing values
         if (ad.funcStack.containsKey(m.toString())) {
@@ -54,7 +55,7 @@ class InvokeExprHandler {
                 str2arg.put(Integer.toString(i), arg.toString());
             }
         }
-        anderson.run(ad.pts, ad.queries, res, sonArgs, str2arg);
+        anderson.run(res, sonArgs, str2arg);
         out.putAll(sonArgs);
     }
 

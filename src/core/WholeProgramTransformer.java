@@ -31,12 +31,10 @@ public class WholeProgramTransformer extends SceneTransformer {
         anderson.curMethod = m.toString();
         anderson.funcStack.put(anderson.curMethod, new TreeSet<>());
 
-        PointsToMap pts = new PointsToMap(); // points-to set, each local a state
-        TreeMap<Integer, TreeSet<Integer>> queries = new TreeMap<>();
-        anderson.run(pts, queries, new TreeSet<>(), new PointsToMap(), new HashMap<>()); // run analysis
+        anderson.run(new TreeSet<>(), new PointsToMap(), new HashMap<>()); // run analysis
 
         StringBuilder answer = new StringBuilder();
-        for (Entry<Integer, TreeSet<Integer>> q : queries.entrySet()) {
+        for (Entry<Integer, TreeSet<Integer>> q : anderson.queries.entrySet()) {
             TreeSet<Integer> result = q.getValue();
             answer.append(q.getKey().toString()).append(":");
             if (result == null)
