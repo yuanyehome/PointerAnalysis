@@ -12,6 +12,34 @@ public class mytest1700012821 {
         public A a = new A();
     }
 
+    static class CastTest {
+        public class MyA {}
+        public class MyB extends CastTest.MyA {}
+
+        public void CastTest_() {
+            BenchmarkN.alloc(100);
+            test.CastTest t = new test.CastTest();
+            BenchmarkN.alloc(200);
+            test.CastTest t1 = new test.CastTest();
+            BenchmarkN.alloc(300);
+            test.CastTest.MyA a = t.new MyA();
+            BenchmarkN.alloc(400);
+            test.CastTest.MyA a2 = t.new MyA();
+            BenchmarkN.alloc(500);
+            test.CastTest.MyB b = t.new MyB();
+            BenchmarkN.alloc(600);
+            test.CastTest.MyB b2 = t.new MyB();
+
+            a = b;
+            b2 = (test.CastTest.MyB) a;
+            BenchmarkN.test(100, b2);
+            int x = 3;
+            if (x > 1)
+                b = b2;
+            BenchmarkN.test(200, b);
+        }
+    }
+
     static void TestStatic() {
         BenchmarkN.alloc(8);
         B b = new B();
@@ -46,7 +74,8 @@ public class mytest1700012821 {
     }
 
     static void TestCast() {
-
+        CastTest test = new CastTest();
+        test.CastTest_();
     }
 
     public static void main() {
