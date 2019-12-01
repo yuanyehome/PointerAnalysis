@@ -61,6 +61,8 @@ public class DefinitionHandler extends StmtHandler {
         } else if (rightOp instanceof StaticFieldRef) {
             if (Anderson.staticVal.containsKey(rightOp.toString()))
                 rightVal.addAll(Anderson.staticVal.get(rightOp.toString()));
+        } else if (rightOp instanceof BinopExpr || rightOp instanceof UnopExpr ||rightOp instanceof IntConstant) {
+            realEmpty = true;
         } else {
             System.out.println("\033[33mDefinitionStmt: Not implemented - Right: \033[0m"
                     + rightOp.getClass().getName());

@@ -27,7 +27,6 @@ public class InvokeHandler extends StmtHandler {
             // current implementation for function calls, context-insensitive, don't
             // consider arguments
             new InvokeExprHandler().run(ad, ie, new TreeSet<Integer>(), in, out);
-            // TODO Implement better analysis for function calls
         }
     }
 
