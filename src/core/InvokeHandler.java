@@ -1,7 +1,5 @@
 package core;
 
-import fj.data.Tree;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import soot.Unit;
 import soot.Value;
 import soot.jimple.IntConstant;

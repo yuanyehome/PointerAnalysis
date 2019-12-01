@@ -1,6 +1,5 @@
 package core;
 
-import soot.Local;
 import soot.Unit;
 import soot.jimple.DefinitionStmt;
 import soot.jimple.InvokeStmt;
