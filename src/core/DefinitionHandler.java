@@ -30,6 +30,10 @@ public class DefinitionHandler extends StmtHandler {
                 rightVal.add(id);
                 if (rightOp instanceof NewArrayExpr) {
                     MemoryTable.initialArrayIndex(id);  // add [id@<index>=null] to memory table
+                } else if (rightOp instanceof NewMultiArrayExpr) {
+                    NewMultiArrayExpr mae = (NewMultiArrayExpr) rightOp;
+                    int dim = mae.getSizes().size();
+                    MemoryTable.initialArrayIndex(id, dim, rightOp);
                 }
                 MemoryTable.repeatedNewExpr.put(u, id);
             }
@@ -61,6 +65,8 @@ public class DefinitionHandler extends StmtHandler {
         } else if (rightOp instanceof StaticFieldRef) {
             if (Anderson.staticVal.containsKey(rightOp.toString()))
                 rightVal.addAll(Anderson.staticVal.get(rightOp.toString()));
+        } else if (rightOp instanceof BinopExpr || rightOp instanceof UnopExpr ||rightOp instanceof IntConstant) {
+            realEmpty = true;
         } else {
             System.out.println("\033[33mDefinitionStmt: Not implemented - Right: \033[0m"
                     + rightOp.getClass().getName());

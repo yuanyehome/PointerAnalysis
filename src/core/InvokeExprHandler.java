@@ -30,13 +30,14 @@ class InvokeExprHandler {
 
         // deal with recursion: merge all passing values
         if (ad.funcStack.contains(m.toString())) {
-            System.out.println("Recursion: set heaps correlated to magic number.");
+            System.out.println("Recursion: set heaps correlated to all values.");
             TreeSet<Integer> heap = new TreeSet<>();
             for (Map.Entry<String, TreeSet<Integer>> e: out.entrySet()) {
                 heap.addAll(e.getValue());
             }
-            //MemoryTable.update();
-            res.add(ad.magicNum);
+            MemoryTable.updateFieldsToAll(heap);
+            // res.add(ad.magicNum);
+            res.addAll(MemoryTable.getGlobalAllId());
             return;
         }
 

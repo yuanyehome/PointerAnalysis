@@ -18,16 +18,17 @@ public class InvokeHandler extends StmtHandler {
         String methodStr = ie.getMethod().toString();
         String allocStr = "<benchmark.internal.BenchmarkN: void alloc(int)>";
         String testStr = "<benchmark.internal.BenchmarkN: void test(int,java.lang.Object)>";
+        String allocStr2 = "<benchmark.internal.Benchmark: void alloc(int)>";
+        String testStr2 = "<benchmark.internal.Benchmark: void test(int,java.lang.Object)>";
 
-        if (methodStr.equals(allocStr)) {
+        if (methodStr.equals(allocStr) || methodStr.equals(allocStr2)) {
             handleAlloc(ad, ie);
-        } else if (methodStr.equals(testStr)) {
+        } else if (methodStr.equals(testStr) || methodStr.equals(testStr2)) {
             handleTest(ad, ie, in);
         } else {
             // current implementation for function calls, context-insensitive, don't
             // consider arguments
             new InvokeExprHandler().run(ad, ie, new TreeSet<Integer>(), in, out);
-            // TODO Implement better analysis for function calls
         }
     }
 
