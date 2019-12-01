@@ -35,8 +35,10 @@ class InvokeExprHandler {
             for (Map.Entry<String, TreeSet<Integer>> e: out.entrySet()) {
                 heap.addAll(e.getValue());
             }
+            //TODO update heap
             //MemoryTable.update();
-            res.add(ad.magicNum);
+            //res.add(ad.magicNum);
+            res.addAll(MemoryTable.getGlobalMaxId());
             return;
         }
 
