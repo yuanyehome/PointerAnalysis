@@ -23,7 +23,6 @@ class InvokeExprHandler {
         SootMethod m = ie.getMethod();
 
         System.out.println(ad.funcStack);
-        System.out.println("\033[33mTest: \033[0m"+m.toString());
         // deal with recursion: merge all passing values
         if (ad.funcStack.containsKey(m.toString())) {
             System.out.println("Recursion: merging all possible heaps.");

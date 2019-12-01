@@ -35,11 +35,13 @@ public class Anderson extends ForwardFlowAnalysis {
     }
 
     void run(TreeSet<Integer> _result, PointsToMap _args, Map<String, String> _str2arg) {
+        System.out.println(curPrefix + " Memory when entering:\n" + MemoryTable.getString());
         result = _result;
         args = _args;
         str2arg = _str2arg;
         doAnalysis(); // analysis main body (implemented in FlowAnalysis)
         funcStack.remove(curMethod);
+        System.out.println(curPrefix + " Memory when leaving:\n" + MemoryTable.getString());
     }
 
     @Override
@@ -83,11 +85,10 @@ public class Anderson extends ForwardFlowAnalysis {
 
         // begin processing
         System.out.println("\033[35mHandle: \033[m" + u.toString());
-        System.out.println("\033[35mCurrent pointsToMap: \033[m" +in);
+        System.out.println("\033[35mCurrent pointsToMap: \033[m" + in);
         if (u instanceof DefinitionStmt) {
             new DefinitionHandler().handle(this, in, u, out);
-        }
-        if (u instanceof InvokeStmt) {
+        } else if (u instanceof InvokeStmt) {
           new InvokeHandler().handle(this, in, u, out);
         } else if (u instanceof ReturnStmt || u instanceof ReturnVoidStmt) {
           new ReturnHandler().handle(this, in, u, out);
