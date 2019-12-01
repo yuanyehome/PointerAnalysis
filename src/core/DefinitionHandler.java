@@ -59,8 +59,8 @@ public class DefinitionHandler extends StmtHandler {
 
         if (rightVal.size() == 0 && !realEmpty) {
             Logger.getLogger("").warning("Empty right val");
-            rightVal.add(ad.magicNum);
-            //rightVal = MemoryTable.getGlobalMaxId();
+            //rightVal.add(ad.magicNum);
+            rightVal = MemoryTable.getGlobalMaxId();
         }
 
         if (leftOp instanceof Local) {
