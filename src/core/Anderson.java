@@ -17,10 +17,11 @@ public class Anderson extends ForwardFlowAnalysis {
     boolean isChecked = false;
 
     static int magicNum = 65536;
-    static TreeMap<Integer, TreeSet<Integer>> queries =
-            new TreeMap<>(); // record query info
+    static Map<Integer, TreeSet<Integer>> queries =
+            new HashMap<>(); // record query info
     //static Map<String, TreeSet<Integer>> funcStack = new HashMap<>();
     static TreeSet<Integer> allocIDSet = new TreeSet<>();
+    static Map<String, TreeSet<Integer>> staticVal = new HashMap<>();
     static List<String> funcStack = new ArrayList<>();
     String curMethod;
 

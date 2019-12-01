@@ -1,5 +1,6 @@
 package core;
 
+import com.sun.org.apache.xpath.internal.operations.And;
 import soot.Local;
 import soot.Unit;
 import soot.Value;
@@ -52,6 +53,9 @@ public class DefinitionHandler extends StmtHandler {
         } else if (rightOp instanceof NullConstant) {
             rightVal = new TreeSet<>();
             realEmpty = true;
+        } else if (rightOp instanceof StaticFieldRef) {
+            if (Anderson.staticVal.containsKey(rightOp.toString()))
+                rightVal.addAll(Anderson.staticVal.get(rightOp.toString()));
         } else {
             System.out.println("\033[33mDefinitionStmt: Not implemented - Right: \033[0m"
                     + rightOp.getClass().getName());
@@ -71,6 +75,10 @@ public class DefinitionHandler extends StmtHandler {
         } else if (leftOp instanceof ArrayRef) {
             ArrayRef ar = (ArrayRef) leftOp;
             handleLeftArray(out, ar);
+        } else if (leftOp instanceof StaticFieldRef) {
+            if (!Anderson.staticVal.containsKey(leftOp.toString()))
+                Anderson.staticVal.put(leftOp.toString(), new TreeSet<>());
+            Anderson.staticVal.get(leftOp.toString()).addAll(rightVal);
         } else {
             System.out.println("\033[32mDefinitionStmt: Not implemented - Left: \033[0m"
                     + leftOp.getClass().getName());
