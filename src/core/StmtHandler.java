@@ -10,7 +10,5 @@ import java.util.logging.Logger;
  * @author guanzhichao
  */
 abstract class StmtHandler {
-    void handle(Anderson ad, PointsToMap in, Unit u, PointsToMap out) {
-        Logger.getLogger("StmtHandler").severe("Common Handler. Should never be invoked.");
-    }
+    abstract void handle(Anderson ad, PointsToMap in, Unit u, PointsToMap out);
 }

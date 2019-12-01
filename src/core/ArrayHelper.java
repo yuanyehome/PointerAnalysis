@@ -10,6 +10,10 @@ class ArrayHelper {
         return ar.getBase().toString() + "." + indexStr;
     }
 
+    static String initNameFromBase(Value v) {
+        return v.toString() + "." + indexStr;
+    }
+
     static String getIndexStr(ArrayRef ar) {
         return indexStr;
     }

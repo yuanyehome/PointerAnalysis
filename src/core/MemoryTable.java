@@ -26,6 +26,10 @@ class MemoryTable {
         return id;
     }
 
+    static void initialArrayIndex(Integer baseId) {
+        table.get(baseId).set(ArrayHelper.indexStr, new TreeSet<>());
+    }
+
     static void update(TreeSet<Integer> setToUpdate, String fieldName, TreeSet<Integer> newPointsToSet) {
         System.out.println("\033[32mUpdate: \033[m" + setToUpdate.toString() + " field-" + fieldName + "\n"
                 + getString());
@@ -41,7 +45,7 @@ class MemoryTable {
     }
 
     static TreeSet<Integer> getPointsToSet(TreeSet<Integer> setToGet, String fieldName) {
-        System.out.println("\033[32mGet: \033[m" + setToGet.toString() + " field-" + fieldName + " from\n"
+        System.out.println("\033[32mGet: \033[m" + setToGet.toString() + " field - " + fieldName + " from\n"
                 + getString());
         TreeSet<Integer> ts = new TreeSet<>();
         for (Integer i : setToGet) {
@@ -50,7 +54,7 @@ class MemoryTable {
         return ts;
     }
 
-    static public String getString() {
+    static String getString() {
         StringBuilder s = new StringBuilder("next auto id: " + nextAutoAllocId.toString() + "\n");
         for (Map.Entry<Integer, MemoryItem> e : table.entrySet()) {
             s.append(e.getValue().toString()).append("\n");
@@ -58,7 +62,7 @@ class MemoryTable {
         return s.toString();
     }
 
-    static public TreeSet<Integer> getGlobalMaxId() {
+    static TreeSet<Integer> getGlobalMaxId() {
         TreeSet<Integer> ts = new TreeSet<>();
         for (Map.Entry<Integer, MemoryItem> e : table.entrySet()) {
             ts.add(e.getKey());
