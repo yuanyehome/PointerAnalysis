@@ -18,7 +18,7 @@ public class Anderson extends ForwardFlowAnalysis {
 
     static int magicNum = 65536;
     static Map<Integer, TreeSet<Integer>> queries =
-            new HashMap<>(); // record query info
+            new TreeMap<>(); // record query info
     //static Map<String, TreeSet<Integer>> funcStack = new HashMap<>();
     static TreeSet<Integer> allocIDSet = new TreeSet<>();
     static Map<String, TreeSet<Integer>> staticVal = new HashMap<>();
