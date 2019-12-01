@@ -1,9 +1,11 @@
 package core;
 
+import fj.data.Tree;
 import soot.Type;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
@@ -38,5 +40,12 @@ public class MemoryItem {
 
     void set(String fieldStr, TreeSet<Integer> ts) {
         fieldIndex.put(fieldStr, ts);
+    }
+
+    void setFieldToAll() {
+        TreeSet<Integer> all = MemoryTable.getGlobalMaxId();
+        for (Map.Entry<String, TreeSet<Integer>> e : fieldIndex.entrySet()) {
+            e.setValue(new TreeSet<>(all));
+        }
     }
 }
