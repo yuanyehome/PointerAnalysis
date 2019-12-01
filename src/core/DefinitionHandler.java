@@ -40,7 +40,7 @@ public class DefinitionHandler extends StmtHandler {
         } else if (rightOp instanceof Local) {
             rightVal.addAll(in.get(rightOp.toString()));
         } else if (rightOp instanceof CastExpr) {
-            rightVal.addAll(in.get(rightOp.toString()));
+            rightVal.addAll(in.get(((CastExpr) rightOp).getOp().toString()));
         } else if (rightOp instanceof InstanceFieldRef) {
             realEmpty = true;   // * = a.f, which a -> null
             InstanceFieldRef rf = (InstanceFieldRef) rightOp;
