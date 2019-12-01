@@ -36,8 +36,7 @@ class MemoryTable {
                 + "\n" + newPointsToSet.toString() + getString());
         for (Integer id : setToUpdate) {
             MemoryItem mi = table.get(id);
-            if (mi.get(fieldName) == null) mi.put(fieldName, newPointsToSet);
-            else mi.get(fieldName).addAll(newPointsToSet);
+            if (mi.get(fieldName) != null) mi.get(fieldName).addAll(newPointsToSet);
         }
         System.out.println("\033[32mAfter Update: \033[m\n" + getString());
     }
@@ -84,7 +83,7 @@ class MemoryTable {
         return s.toString();
     }
 
-    static TreeSet<Integer> getGlobalMaxId() {
+    static TreeSet<Integer> getGlobalAllId() {
         TreeSet<Integer> ts = new TreeSet<>();
         for (Map.Entry<Integer, MemoryItem> e : table.entrySet()) {
             ts.add(e.getKey());

@@ -10,7 +10,6 @@ import soot.toolkits.graph.ExceptionalUnitGraph;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class WholeProgramTransformer extends SceneTransformer {

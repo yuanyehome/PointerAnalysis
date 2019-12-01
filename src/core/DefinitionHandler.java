@@ -1,7 +1,5 @@
 package core;
 
-import com.sun.org.apache.xpath.internal.operations.And;
-import polyglot.ast.NewArray;
 import soot.Local;
 import soot.Unit;
 import soot.Value;
@@ -71,7 +69,7 @@ public class DefinitionHandler extends StmtHandler {
         if (rightVal.size() == 0 && !realEmpty) {
             Logger.getLogger("").warning("Empty right val");
             //rightVal.add(ad.magicNum);
-            rightVal = MemoryTable.getGlobalMaxId();
+            rightVal = MemoryTable.getGlobalAllId();
         }
 
         if (leftOp instanceof Local) {
