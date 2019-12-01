@@ -1,5 +1,3 @@
-.idea/*
-.settings/*
 bin/*
 sootOutput/*
 result.txt
@@ -7,5 +5,7 @@ result.txt
 code/sootOutput/*
 code/test/*.class
 code/gzc_compile.sh
-bin/
-classes/
+classes/*
+out/*
+*.jar
+src/META-INF/*

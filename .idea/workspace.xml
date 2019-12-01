@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="dbeba1af-01a6-4f00-bdef-bc585b15be71" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/benchmark/internal/Benchmark.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/benchmark/internal/BenchmarkN.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/benchmark/objects/A.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/benchmark/objects/B.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/benchmark/objects/G.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/benchmark/objects/H.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/benchmark/objects/I.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/benchmark/objects/N.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/benchmark/objects/P.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/benchmark/objects/Q.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/benchmark/objects/Z.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/benchmark/objects/test.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/NoPointerAnalysis/.classpath" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/NoPointerAnalysis/.project" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/NoPointerAnalysis/jce.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/NoPointerAnalysis/rt.jar" beforeDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1UOc79zlQazkHUQkpxOZgCqHzop" />
+  <component name="PropertiesComponent">
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="MyPointerAnalysis" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="core.MyPointerAnalysis" />
+      <module name="PointerAnalysis" />
+      <option name="PROGRAM_PARAMETERS" value="code test.BasicTest" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="core.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.MyPointerAnalysis" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="dbeba1af-01a6-4f00-bdef-bc585b15be71" name="Default Changelist" comment="" />
+      <created>1575230912059</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1575230912059</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
