@@ -42,6 +42,12 @@ class MemoryTable {
         System.out.println("\033[32mAfter Update: \033[m\n" + getString());
     }
 
+    static void updateFieldsToAll(TreeSet<Integer> setToUpdate) {
+        for (Integer id : setToUpdate) {
+            table.get(id).setFieldToAll();
+        }
+    }
+
     static void set(TreeSet<Integer> setToUpdate, String fieldName, TreeSet<Integer> newPointsToSet) {
         System.out.println("\033[Set: \033[m" + setToUpdate.toString() + " field-" + fieldName + "\n"
                 + getString());
