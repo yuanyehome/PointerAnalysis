@@ -10,7 +10,7 @@ public class RecursionTest {
         BenchmarkN.alloc(7);
         A d = new A(k);
         specialchange(d);
-        BenchmarkN.test(8, d);
+        BenchmarkN.test(8, d);// 7
     }
 
     public static void specialchange(A k) {
@@ -22,8 +22,8 @@ public class RecursionTest {
         B b = new B();
         k.f = b;
         testme(b);
-        BenchmarkN.test(5, d); // 4 5
-        BenchmarkN.test(6, s.f);
+        BenchmarkN.test(5, d); // 4
+        BenchmarkN.test(6, s.f); //0
     }
 
     public static void main(String[] args) {
@@ -40,7 +40,7 @@ public class RecursionTest {
         specialchange(c);
         BenchmarkN.test(3, c);  // 4
         BenchmarkN.test(4, b);  // 2 3
-        BenchmarkN.test(7, c.f);
+        BenchmarkN.test(7, c.f); // 0 6
     }
 
 }
