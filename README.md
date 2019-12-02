@@ -1,7 +1,6 @@
 # 指针分析大作业 
 
-软件分析技术课程作业，基于 [Soot 程序分析框架](sable.github.io/soot[
-](https://cn.bing.com/search?q=soot&qs=n&form=QBLHCN&sp=-1&pq=soot&sc=8-4&sk=&cvid=D42429B894C04E4483BF5A0C033113D3#))。
+软件分析技术课程作业，基于 [Soot 程序分析框架](sable.github.io/soot)。
 
 示例程序：
 
@@ -43,8 +42,7 @@ public static void main(String[] args) {
 
 # Pointer Analysis
 
-Homework of *Software Analysis*, based on [Soot](sable.github.io/soot[
-](https://cn.bing.com/search?q=soot&qs=n&form=QBLHCN&sp=-1&pq=soot&sc=8-4&sk=&cvid=D42429B894C04E4483BF5A0C033113D3#)).
+Homework of *Software Analysis*, based on [Soot](sable.github.io/soot).
 
 Example program：
 
