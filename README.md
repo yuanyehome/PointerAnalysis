@@ -40,6 +40,10 @@ public static void main(String[] args) {
 - [yuanye](https://github.com/yuanyehome)
 - [vbcpascal](https://github.com/vbcpascal)
 
+TODO ：
+
+- 目前继承，多态和抽象类接口存在bug，参见测试程序中mytest1700012796, mytest1600012710, mytest1901111306
+
 # Pointer Analysis
 
 Homework of *Software Analysis*, based on [Soot](sable.github.io/soot).
@@ -81,3 +85,7 @@ Contributor:
 - [malusamayo](https://github.com/malusamayo)
 - [yuanye](https://github.com/yuanyehome)
 - [vbcpascal](https://github.com/vbcpascal)
+
+TODO :
+
+- According to mytest1700012796, mytest1600012710, mytest1901111306, there are some bugs in JAVA interface, inheritance and polymorphism
