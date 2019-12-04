@@ -19,20 +19,20 @@ public class mytest1700012821 {
 
         public void CastTest_() {
             BenchmarkN.alloc(100);
-            test.CastTest t = new test.CastTest();
+            CastTest t = new CastTest();
             BenchmarkN.alloc(200);
-            test.CastTest t1 = new test.CastTest();
+            CastTest t1 = new CastTest();
             BenchmarkN.alloc(300);
-            test.CastTest.MyA a = t.new MyA();
+            CastTest.MyA a = t.new MyA();
             BenchmarkN.alloc(400);
-            test.CastTest.MyA a2 = t.new MyA();
+            CastTest.MyA a2 = t.new MyA();
             BenchmarkN.alloc(500);
-            test.CastTest.MyB b = t.new MyB();
+            CastTest.MyB b = t.new MyB();
             BenchmarkN.alloc(600);
-            test.CastTest.MyB b2 = t.new MyB();
+            CastTest.MyB b2 = t.new MyB();
 
             a = b;
-            b2 = (test.CastTest.MyB) a;
+            b2 = (CastTest.MyB) a;
             BenchmarkN.test(100, b2); // 500
             int x = 3;
             if (x > 1)
@@ -76,8 +76,8 @@ public class mytest1700012821 {
 
     static void TestCast() {
         mytest1700012821 s = new mytest1700012821();
-        CastTest test = s.new CastTest();
-        test.CastTest_();
+        CastTest tests = s.new CastTest();
+        tests.CastTest_();
     }
 
     public static void main(String[] args) {
